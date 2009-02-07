@@ -1,0 +1,119 @@
+BEGIN;
+CREATE TABLE `tiger_user` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `username` varchar(16) NOT NULL,
+    `password` varchar(64) NOT NULL,
+    `is_active` bool NOT NULL
+)
+;
+CREATE TABLE `tiger_person` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `first_name` varchar(42) NOT NULL,
+    `middle_name` varchar(42) NOT NULL,
+    `last_name` varchar(42) NOT NULL,
+    `addr_1` varchar(42) NOT NULL,
+    `addr_2` varchar(42) NOT NULL,
+    `city` varchar(42) NOT NULL,
+    `state` varchar(2) NOT NULL,
+    `zip_code` varchar(10) NOT NULL,
+    `phone_number` varchar(20) NOT NULL,
+    `email` varchar(75) NOT NULL,
+    `user_id` integer NOT NULL UNIQUE
+)
+;
+ALTER TABLE `tiger_person` ADD CONSTRAINT `user_id_refs_id_22e1317b` FOREIGN KEY (`user_id`) REFERENCES `tiger_user` (`id`);
+CREATE TABLE `tiger_instructor` (
+    `person_ptr_id` integer NOT NULL PRIMARY KEY
+)
+;
+ALTER TABLE `tiger_instructor` ADD CONSTRAINT `person_ptr_id_refs_id_229840cb` FOREIGN KEY (`person_ptr_id`) REFERENCES `tiger_person` (`id`);
+CREATE TABLE `tiger_client` (
+    `person_ptr_id` integer NOT NULL PRIMARY KEY
+)
+;
+ALTER TABLE `tiger_client` ADD CONSTRAINT `person_ptr_id_refs_id_b882a93` FOREIGN KEY (`person_ptr_id`) REFERENCES `tiger_person` (`id`);
+CREATE TABLE `tiger_course` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `name` varchar(256) NOT NULL,
+    `subject` varchar(128) NOT NULL,
+    `description` longtext NOT NULL
+)
+;
+CREATE TABLE `tiger_timewindow` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `starting` datetime NOT NULL,
+    `ending` datetime NOT NULL,
+    `valid` bool NOT NULL
+)
+;
+CREATE TABLE `tiger_instructoravailability` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `instructor_id` integer NOT NULL
+)
+;
+ALTER TABLE `tiger_instructoravailability` ADD CONSTRAINT `instructor_id_refs_person_ptr_id_54865900` FOREIGN KEY (`instructor_id`) REFERENCES `tiger_instructor` (`person_ptr_id`);
+CREATE TABLE `tiger_courserequest` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `client_id` integer NOT NULL,
+    `course_id` integer NOT NULL,
+    `status` integer NOT NULL
+)
+;
+ALTER TABLE `tiger_courserequest` ADD CONSTRAINT `course_id_refs_id_79bc137` FOREIGN KEY (`course_id`) REFERENCES `tiger_course` (`id`);
+ALTER TABLE `tiger_courserequest` ADD CONSTRAINT `client_id_refs_person_ptr_id_b1c3e2f` FOREIGN KEY (`client_id`) REFERENCES `tiger_client` (`person_ptr_id`);
+CREATE TABLE `tiger_coursesession` (
+    `timewindow_ptr_id` integer NOT NULL PRIMARY KEY,
+    `location` longtext NOT NULL,
+    `description` longtext NOT NULL,
+    `notes` longtext NOT NULL
+)
+;
+ALTER TABLE `tiger_coursesession` ADD CONSTRAINT `timewindow_ptr_id_refs_id_502d1b88` FOREIGN KEY (`timewindow_ptr_id`) REFERENCES `tiger_timewindow` (`id`);
+CREATE TABLE `tiger_courseschedule` (
+    `courserequest_ptr_id` integer NOT NULL PRIMARY KEY,
+    `instructor_id` integer NOT NULL
+)
+;
+ALTER TABLE `tiger_courseschedule` ADD CONSTRAINT `instructor_id_refs_person_ptr_id_56031770` FOREIGN KEY (`instructor_id`) REFERENCES `tiger_instructor` (`person_ptr_id`);
+ALTER TABLE `tiger_courseschedule` ADD CONSTRAINT `courserequest_ptr_id_refs_id_71775cc4` FOREIGN KEY (`courserequest_ptr_id`) REFERENCES `tiger_courserequest` (`id`);
+CREATE TABLE `tiger_instructoravailability_availability` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `instructoravailability_id` integer NOT NULL,
+    `timewindow_id` integer NOT NULL,
+    UNIQUE (`instructoravailability_id`, `timewindow_id`)
+)
+;
+ALTER TABLE `tiger_instructoravailability_availability` ADD CONSTRAINT `instructoravailability_id_refs_id_1aa63ca4` FOREIGN KEY (`instructoravailability_id`) REFERENCES `tiger_instructoravailability` (`id`);
+ALTER TABLE `tiger_instructoravailability_availability` ADD CONSTRAINT `timewindow_id_refs_id_4a099fc9` FOREIGN KEY (`timewindow_id`) REFERENCES `tiger_timewindow` (`id`);
+CREATE TABLE `tiger_instructoravailability_courses` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `instructoravailability_id` integer NOT NULL,
+    `course_id` integer NOT NULL,
+    UNIQUE (`instructoravailability_id`, `course_id`)
+)
+;
+ALTER TABLE `tiger_instructoravailability_courses` ADD CONSTRAINT `instructoravailability_id_refs_id_3fe27090` FOREIGN KEY (`instructoravailability_id`) REFERENCES `tiger_instructoravailability` (`id`);
+ALTER TABLE `tiger_instructoravailability_courses` ADD CONSTRAINT `course_id_refs_id_7fe33135` FOREIGN KEY (`course_id`) REFERENCES `tiger_course` (`id`);
+CREATE TABLE `tiger_courserequest_availability` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `courserequest_id` integer NOT NULL,
+    `timewindow_id` integer NOT NULL,
+    UNIQUE (`courserequest_id`, `timewindow_id`)
+)
+;
+ALTER TABLE `tiger_courserequest_availability` ADD CONSTRAINT `courserequest_id_refs_id_7872e66c` FOREIGN KEY (`courserequest_id`) REFERENCES `tiger_courserequest` (`id`);
+ALTER TABLE `tiger_courserequest_availability` ADD CONSTRAINT `timewindow_id_refs_id_48d86a02` FOREIGN KEY (`timewindow_id`) REFERENCES `tiger_timewindow` (`id`);
+CREATE TABLE `tiger_courseschedule_sessions` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `courseschedule_id` integer NOT NULL,
+    `coursesession_id` integer NOT NULL,
+    UNIQUE (`courseschedule_id`, `coursesession_id`)
+)
+;
+ALTER TABLE `tiger_courseschedule_sessions` ADD CONSTRAINT `courseschedule_id_refs_courserequest_ptr_id_2a155db6` FOREIGN KEY (`courseschedule_id`) REFERENCES `tiger_courseschedule` (`courserequest_ptr_id`);
+ALTER TABLE `tiger_courseschedule_sessions` ADD CONSTRAINT `coursesession_id_refs_timewindow_ptr_id_2f624a80` FOREIGN KEY (`coursesession_id`) REFERENCES `tiger_coursesession` (`timewindow_ptr_id`);
+CREATE INDEX `tiger_instructoravailability_instructor_id` ON `tiger_instructoravailability` (`instructor_id`);
+CREATE INDEX `tiger_courserequest_client_id` ON `tiger_courserequest` (`client_id`);
+CREATE INDEX `tiger_courserequest_course_id` ON `tiger_courserequest` (`course_id`);
+CREATE INDEX `tiger_courseschedule_instructor_id` ON `tiger_courseschedule` (`instructor_id`);
+COMMIT;

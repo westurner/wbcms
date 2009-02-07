@@ -1,0 +1,102 @@
+BEGIN TRANSACTION
+CREATE TABLE [tiger_user] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [username] nvarchar(16) NOT NULL,
+    [password] nvarchar(64) NOT NULL,
+    [is_active] bit NOT NULL
+)
+;
+CREATE TABLE [tiger_person] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [first_name] nvarchar(42) NOT NULL,
+    [middle_name] nvarchar(42) NOT NULL,
+    [last_name] nvarchar(42) NOT NULL,
+    [addr_1] nvarchar(42) NOT NULL,
+    [addr_2] nvarchar(42) NOT NULL,
+    [city] nvarchar(42) NOT NULL,
+    [state] varchar(2) NOT NULL,
+    [zip_code] nvarchar(10) NOT NULL,
+    [phone_number] varchar(20) NOT NULL,
+    [email] nvarchar(75) NOT NULL,
+    [user_id] int NOT NULL UNIQUE REFERENCES [tiger_user] ([id])
+)
+;
+CREATE TABLE [tiger_instructor] (
+    [person_ptr_id] int NOT NULL PRIMARY KEY REFERENCES [tiger_person] ([id])
+)
+;
+CREATE TABLE [tiger_client] (
+    [person_ptr_id] int NOT NULL PRIMARY KEY REFERENCES [tiger_person] ([id])
+)
+;
+CREATE TABLE [tiger_course] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [name] nvarchar(256) NOT NULL,
+    [subject] nvarchar(128) NOT NULL,
+    [description] nvarchar(max) NOT NULL
+)
+;
+CREATE TABLE [tiger_timewindow] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [starting] datetime NOT NULL,
+    [ending] datetime NOT NULL,
+    [valid] bit NOT NULL
+)
+;
+CREATE TABLE [tiger_instructoravailability] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [instructor_id] int NOT NULL REFERENCES [tiger_instructor] ([person_ptr_id])
+)
+;
+CREATE TABLE [tiger_courserequest] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [client_id] int NOT NULL REFERENCES [tiger_client] ([person_ptr_id]),
+    [course_id] int NOT NULL REFERENCES [tiger_course] ([id]),
+    [status] int NOT NULL
+)
+;
+CREATE TABLE [tiger_coursesession] (
+    [timewindow_ptr_id] int NOT NULL PRIMARY KEY REFERENCES [tiger_timewindow] ([id]),
+    [location] nvarchar(max) NOT NULL,
+    [description] nvarchar(max) NOT NULL,
+    [notes] nvarchar(max) NOT NULL
+)
+;
+CREATE TABLE [tiger_courseschedule] (
+    [courserequest_ptr_id] int NOT NULL PRIMARY KEY REFERENCES [tiger_courserequest] ([id]),
+    [instructor_id] int NOT NULL REFERENCES [tiger_instructor] ([person_ptr_id])
+)
+;
+CREATE TABLE [tiger_instructoravailability_availability] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [instructoravailability_id] int NOT NULL REFERENCES [tiger_instructoravailability] ([id]),
+    [timewindow_id] int NOT NULL REFERENCES [tiger_timewindow] ([id]),
+    UNIQUE ([instructoravailability_id], [timewindow_id])
+)
+;
+CREATE TABLE [tiger_instructoravailability_courses] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [instructoravailability_id] int NOT NULL REFERENCES [tiger_instructoravailability] ([id]),
+    [course_id] int NOT NULL REFERENCES [tiger_course] ([id]),
+    UNIQUE ([instructoravailability_id], [course_id])
+)
+;
+CREATE TABLE [tiger_courserequest_availability] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [courserequest_id] int NOT NULL REFERENCES [tiger_courserequest] ([id]),
+    [timewindow_id] int NOT NULL REFERENCES [tiger_timewindow] ([id]),
+    UNIQUE ([courserequest_id], [timewindow_id])
+)
+;
+CREATE TABLE [tiger_courseschedule_sessions] (
+    [id] int IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    [courseschedule_id] int NOT NULL REFERENCES [tiger_courseschedule] ([courserequest_ptr_id]),
+    [coursesession_id] int NOT NULL REFERENCES [tiger_coursesession] ([timewindow_ptr_id]),
+    UNIQUE ([courseschedule_id], [coursesession_id])
+)
+;
+CREATE INDEX [tiger_instructoravailability_instructor_id] ON [tiger_instructoravailability] ([instructor_id]);
+CREATE INDEX [tiger_courserequest_client_id] ON [tiger_courserequest] ([client_id]);
+CREATE INDEX [tiger_courserequest_course_id] ON [tiger_courserequest] ([course_id]);
+CREATE INDEX [tiger_courseschedule_instructor_id] ON [tiger_courseschedule] ([instructor_id]);
+COMMIT;
