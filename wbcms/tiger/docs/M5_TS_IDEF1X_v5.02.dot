@@ -1,0 +1,27 @@
+digraph Testing_Graph {
+  nodesep=1.0
+
+  wbcms_tiger_models_Company [shape=record, label="{[Company]id\l|name\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_Contact [shape=record, label="{[Contact]id\l|addr_1\laddr_2\lcity\lcompany_id (FK)\lemail\lfirst_name\llast_name\lmiddle_name\lphone_number\lstate\lzip_code\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_Instructor [shape=record, label="{[Instructor]contact_ptr_id\l|\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_InstructorAvailability [shape=record, label="{[InstructorAvailability]id\l|ending\linstructor_id (FK)\lopen\lstarting\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_ClientAvailability [shape=record, label="{[ClientAvailability]id\l|client_id (FK)\lcourse_request_id (FK)\lending\lopen\lstarting\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_Course [shape=record, label="{[Course]id\l|cost\ldescription\lname\lsubject\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseRequest [shape=record, label="{[CourseRequest]id\l|client_id (FK)\lcourse_id (FK)\lnumber_of_students\lschedule_id (FK)\lstatus\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseSession [shape=record, label="{[CourseSession]id\l|description\lending\llocation\lnotes\lopen\lschedule_id (FK)\lstarting\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseSchedule [shape=record, label="{[CourseSchedule]id\l|course_id (FK)\linstructor_id (FK)\l}", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+
+  wbcms_tiger_models_Contact -> wbcms_tiger_models_Company [label="company_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_Instructor -> wbcms_tiger_models_Contact [label="contact_ptr_id", arrowhead=none, headlabel="", arrowtail=none, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_Instructor -> wbcms_tiger_models_Course [label="courses", style="dashed", arrowhead=dot, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_InstructorAvailability -> wbcms_tiger_models_Instructor [label="instructor_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_ClientAvailability -> wbcms_tiger_models_Contact [label="client_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_ClientAvailability -> wbcms_tiger_models_CourseRequest [label="course_request_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseRequest -> wbcms_tiger_models_Course [label="course_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseRequest -> wbcms_tiger_models_Contact [label="client_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseRequest -> wbcms_tiger_models_CourseSchedule [label="schedule_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseSession -> wbcms_tiger_models_CourseSchedule [label="schedule_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseSchedule -> wbcms_tiger_models_Course [label="course_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseSchedule -> wbcms_tiger_models_Instructor [label="instructor_id", style="dashed", arrowhead=none, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+  wbcms_tiger_models_CourseSchedule -> wbcms_tiger_models_Contact [label="students", style="dashed", arrowhead=dot, headlabel="", arrowtail=dot, taillabel="", fontname="Helvetica", fontsize=10.0, labeldistance=1.4];
+}
