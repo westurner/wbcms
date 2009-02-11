@@ -12,12 +12,12 @@ class Company(models.Model):
         return self.name
    
     class Meta:
-        verbose_name_plural = "companies"
+        verbose_name_plural = "Companies"
 
 
 class Contact(models.Model):
     """
-    A person. With name, ``company``, address, and contact information
+    A person. With name, ``Company``, address, and contact information
     """
     # XXX: Do we need to store multiple addresses, emails, etc?
     first_name = models.CharField(verbose_name="First Name", max_length=42)
@@ -51,16 +51,23 @@ class Instructor(Contact):
         related_name="instructor_teaches_courses")
 
 
+class Student(Contact):
+    """
+    A student. Subclass of ``Contact``
+    """
+    pass
+    
+
 class TimeWindow(models.Model):
     """
     A generic period of time between start and end. May be open or not open.
     Abstract base class.
     """
-    starting = models.DateTimeField(verbose_name="Start")
-    ending = models.DateTimeField(verbose_name="End")
-    open = models.BooleanField(verbose_name="Open",
-        help_text="Whether the time window is still open",
-        default=True)
+    start = models.DateTimeField(verbose_name="Start")
+    end = models.DateTimeField(verbose_name="End")
+    scheduled = models.BooleanField(verbose_name="Open",
+        help_text="Whether the availability window has been scheduled",
+        default=False)
 
     def __unicode__(self):
         return "%s -> %s" % (self.starting.strftime("%D %l:%M %p"),
@@ -74,7 +81,7 @@ class TimeWindow(models.Model):
 
 class InstructorAvailability(TimeWindow):
     """
-    When an ``instructor`` is available. Subclass of ``TimeWindow``
+    When an ``Instructor`` is available for teaching
     """
     instructor = models.ForeignKey(Instructor, verbose_name="Instructor")
 
@@ -84,9 +91,9 @@ class InstructorAvailability(TimeWindow):
 
 class ClientAvailability(TimeWindow):
     """
-    When a ``client`` is available. Subclass of ``TimeWindow``
+    When a ``Contact`` is available to take a course
     """
-    client = models.ForeignKey(Contact, verbose_name="Client")
+    contact = models.ForeignKey(Contact, verbose_name="Client")
     course_request = models.ForeignKey('CourseRequest',
         verbose_name="Course Request")
 
@@ -107,6 +114,10 @@ class Course(models.Model):
         max_digits=8,
         null=True,
         blank=True)
+    min_required_students = models.IntegerField(
+        verbose_name="Minimum number of students",
+        blank=True
+        )
 
     def _student_count(self):
         return 
@@ -131,7 +142,7 @@ class CourseRequest(models.Model):
     A request made by (or on behalf of) a ``client``, who would like to
     schedule a ``Course``s during one or more periods of ``Availability``.
     """
-    client = models.ForeignKey(Contact, verbose_name="Client")
+    contact = models.ForeignKey(Contact, verbose_name="Client")
     course = models.ForeignKey(Course, verbose_name="Requested Course")
     number_of_students = models.IntegerField(verbose_name="Number of Students")
     status = models.IntegerField(verbose_name="Request Status",
@@ -146,14 +157,15 @@ class CourseRequest(models.Model):
         verbose_name = "Course Request"
 
 
-class CourseSession(TimeWindow):
+class CourseSession(models.Model):
     """
-    A course session with a location, description, and a note for the
-    training coordinator. Subclass of ``TimeWindow``.
+    A course session with a location, description, and notes.
     """
     location = models.TextField(verbose_name="Session Location")
     description = models.TextField(verbose_name="Session Description")
     notes = models.TextField(verbose_name="Session Notes")
+    start = models.DateTimeField(verbose_name="Start")
+    end = models.DateTimeField(verbose_name="End")
     schedule = models.ForeignKey('CourseSchedule',
         verbose_name="Course Schedule",
         related_name="course_schedule_sessions")
@@ -173,9 +185,9 @@ class CourseSchedule(models.Model):
     instructor = models.ForeignKey(Instructor,
         verbose_name="Instructor",
         related_name="assigned_instructor")
-    students = models.ManyToManyField(Contact,
+    students = models.ManyToManyField(Student,
         verbose_name="Course Students",
-        related_name="student_takes_course")
+        related_name="student_courseschedule")
 
     def _number_of_students(self):
         return self.students.count()
@@ -187,6 +199,3 @@ class CourseSchedule(models.Model):
         verbose_name = "Course Schedule"
     
 
-# XXX: On the web course request form, a "would you be interested in" survey
-# could generate additional warm leads
-# XXX: Costs? Per Course

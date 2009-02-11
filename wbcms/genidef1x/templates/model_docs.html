@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>ERD Documentation</h1>
+{% for model in models %}
+<h2>{{ model.name }}</h2>
+<table>
+<thead>{{ model.desc }}</head>
+<tbody>
+<tr>
+<th>Name</th><th>Type</th><th>Null</th><th>Role</th><th>Description</th>
+</tr>
+{% for attr in model.attrs %}
+<tr>
+<td>{{ attr.name }}</td>
+<td>{{ attr.type }}</td>
+<td>{{ attr.null }}</td>
+<td>{{ attr.role }}</td>
+<td>{{ attr.desc }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endfor %}
+
+{% endblock content %}
