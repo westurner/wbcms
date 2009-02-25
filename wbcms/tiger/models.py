@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Company(models.Model):
     """
-    A company a ``contact`` may work for.
+    A company a ``Person`` may work for.
     """
     name = models.CharField(verbose_name="Company Name", max_length=128)
 
@@ -15,16 +15,15 @@ class Company(models.Model):
         verbose_name_plural = "Companies"
 
 
-class Contact(models.Model):
+class Person(models.Model):
     """
-    A person. With name, ``Company``, address, and contact information
+    A person. With name, ``Company``, address, and person information
     """
-    # XXX: Do we need to store multiple addresses, emails, etc?
     first_name = models.CharField(verbose_name="First Name", max_length=42)
     middle_name = models.CharField(verbose_name="Middle Name", max_length=42)
     last_name = models.CharField(verbose_name="Last Name", max_length=42)
     company = models.ForeignKey('Company', verbose_name="Company",
-        related_name="contact_worksfor_company")
+        related_name="person_worksfor_company")
     addr_1 = models.CharField(verbose_name="Address Line 1", max_length=42,
         blank=True)
     addr_2 = models.CharField(verbose_name="Address Line 2", max_length=42,
@@ -33,8 +32,6 @@ class Contact(models.Model):
     state = us_models.USStateField(verbose_name="State")
     zip_code = models.CharField(verbose_name="Zip Code", 
         max_length=10)
-    phone_number = us_models.PhoneNumberField(verbose_name="Phone Number",
-        help_text="555-555-5555")
     email = models.EmailField(verbose_name="Email Address")
     
     def __unicode__(self):
@@ -43,20 +40,37 @@ class Contact(models.Model):
             self.last_name)
 
 
-class Instructor(Contact):
+class Instructor(Person):
     """
-    An instructor. Subclass of ``Contact``
+    An instructor. Subclass of ``Person``
     """
     courses = models.ManyToManyField('Course', 
-        related_name="instructor_teaches_courses")
+        related_name="ability_to_teach")
 
 
-class Student(Contact):
+class Student(Person):
     """
-    A student. Subclass of ``Contact``
+    A student. Subclass of ``Person``
     """
     pass
-    
+
+
+PHONE_TYPES = (
+    ('business','Business'),
+    ('cell','Cell'),
+    ('home','Home')
+)
+class Phone(models.Model):
+    """
+    A phone number for a ``Person``
+    """
+    person = models.ForeignKey('Person',
+        related_name="phone_for_person")
+    phone_type = models.CharField(verbose_name="Phone Type",max_length="10",
+        choices=PHONE_TYPES)
+    phone_number = us_models.PhoneNumberField(verbose_name="Phone Number",
+        help_text="555-555-5555")
+ 
 
 class TimeWindow(models.Model):
     """
@@ -91,9 +105,9 @@ class InstructorAvailability(TimeWindow):
 
 class ClientAvailability(TimeWindow):
     """
-    When a ``Contact`` is available to take a course
+    When a ``Person`` is available to take a course
     """
-    contact = models.ForeignKey(Contact, verbose_name="Client")
+    person = models.ForeignKey(Person, verbose_name="Client")
     course_request = models.ForeignKey('CourseRequest',
         verbose_name="Course Request")
 
@@ -142,7 +156,7 @@ class CourseRequest(models.Model):
     A request made by (or on behalf of) a ``client``, who would like to
     schedule a ``Course``s during one or more periods of ``Availability``.
     """
-    contact = models.ForeignKey(Contact, verbose_name="Client")
+    person = models.ForeignKey(Person, verbose_name="Client")
     course = models.ForeignKey(Course, verbose_name="Requested Course")
     number_of_students = models.IntegerField(verbose_name="Number of Students")
     status = models.IntegerField(verbose_name="Request Status",
@@ -155,23 +169,6 @@ class CourseRequest(models.Model):
 
     class Meta:
         verbose_name = "Course Request"
-
-
-class CourseSession(models.Model):
-    """
-    A course session with a location, description, and notes.
-    """
-    location = models.TextField(verbose_name="Session Location")
-    description = models.TextField(verbose_name="Session Description")
-    notes = models.TextField(verbose_name="Session Notes")
-    start = models.DateTimeField(verbose_name="Start")
-    end = models.DateTimeField(verbose_name="End")
-    schedule = models.ForeignKey('CourseSchedule',
-        verbose_name="Course Schedule",
-        related_name="course_schedule_sessions")
-
-    class Meta:
-        verbose_name = "Course Session"
 
 
 class CourseSchedule(models.Model):
@@ -192,10 +189,5 @@ class CourseSchedule(models.Model):
     def _number_of_students(self):
         return self.students.count()
 
-    def _number_of_sessions(self):
-        return self.course_schedule_sessions.count()
-
     class Meta:
         verbose_name = "Course Schedule"
-    
-
