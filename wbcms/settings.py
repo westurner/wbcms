@@ -23,7 +23,8 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = _PATH('data','testdb.sqlite')             # Or path to database file if using sqlite3.
+DATABASE_NAME = _PATH('var','testdb.sqlite')             # Or path to database file if using sqlite3.
+print DATABASE_NAME
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -58,7 +59,7 @@ MEDIA_URL = _URL('media')
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/admin_media/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '7%lj)m#%(d8=2g&vcw4k1w@a4pgp%w!$eep4$bsa20+5h02d-s'
@@ -71,6 +72,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.csrf.middleware.CsrfMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -100,3 +103,5 @@ INSTALLED_APPS = (
     'wbcms.tiger',
     'django_extensions',
 )
+
+FORCE_SCRIPT_NAME=""
