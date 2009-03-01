@@ -114,7 +114,12 @@ class ClientAvailability(TimeWindow):
     class Meta:
         verbose_name_plural = verbose_name = "Client Availability"
 
-    
+
+COURSE_STATUSES (
+   (-2, Proposed),
+   (-1, Draft),
+   ( 1, Available)
+)
 class Course(models.Model):
     """
     A ``course`` offered through the TDC
@@ -130,11 +135,13 @@ class Course(models.Model):
         blank=True)
     min_required_students = models.IntegerField(
         verbose_name="Minimum number of students",
-        blank=True
-        )
+        blank=True)
+    status = IntegerField(verbose_name="Course Status",
+                          choices=COURSE_STATUSES,
+                          default=-1)
 
     def _student_count(self):
-        return 
+        return self.
 
     def __unicode__(self):
         return self.name
