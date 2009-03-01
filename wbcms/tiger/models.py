@@ -141,7 +141,7 @@ class Course(models.Model):
                           default=-1)
 
     def _student_count(self):
-        return self.
+        raise NotImplementedError
 
     def __unicode__(self):
         return self.name
