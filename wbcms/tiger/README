@@ -1,0 +1,149 @@
+==================================
+Web Based Course Management Systen
+==================================
+---------------
+Tiger Solutions
+---------------
+
+Application Layout
+==================
+Generally, Django allows for a 3 tier architecture.
+
+MVC:Django:Purpose
+------------------
+Model : Model : Data
+View : Template : Presentation
+Controller : View : Which Data
+
+See the `Django FAQ`_ for more information
+
+.. _Django FAQ: http://docs.djangoproject.com/en/dev/faq/general/#django-appears-to-be-a-mvc-framework-but-you-call-the-controller-the-view-and-the-view-the-template-how-come-you-don-t-use-the-standard-names
+
+
+Models
+------
+Company(models.Model):
+Person(models.Model):
+Instructor(Person):
+class Student(Person):
+class Phone(models.Model):
+
+class TimeWindow(models.Model):
+class InstructorAvailability(TimeWindow):
+class ClientAvailability(TimeWindow):
+
+class Course(models.Model):
+class CourseRequest(models.Model):
+class CourseSchedule(models.Model):
+
+
+Workflows / Interaction Paths
+----------------------------
+
+   @authz(*)
+A. View Available Courses
+   1. Course List
+      -> Course Detail
+      -> Course Request
+   2. Course Detail
+      - Name
+      - Subject
+      - Description
+      - Cost (?)
+      - Min Students
+
+      -> Course Request (B)
+      -> Back to Lists (A.1)
+
+   @authz(user)
+B. Client: Course Request
+ 1. Login (D) || Register (E)
+ 2. Create/Update Profile
+ 3. Create/Update Course Request
+    = Status[-1] Unverified
+    + Course
+    + Number of Students
+    + n * Client Availability
+    -> Submit
+    = Status[-1]: Unverified
+    
+    1. Verify Request
+        -> Modify Request (B.3)
+        -> Cancel -> Alert(Confirm: yes/no)
+        -> Submit   
+        = Status[1] Pending
+ 5. Thank You + Email Recepit
+    -> Course Catalog
+    -> Outstanding Course Requests
+
+   @authz(client || instructor || manager)
+C. Client: Outstanding Course Requests
+   - Request List
+     - Course
+     - Number of Students
+     - Availability
+     - Request Date
+
+   @authz(*)
+D. Login
+   + Email
+   + Password
+   -> Forgot your password?
+   -> Register (E)
+
+   See: `django-registration`
+
+
+   @authz(*)
+E. Register Account
+   1. Easy Registration
+      + Email
+      + Password
+      + Captcha
+      -> Submit
+      = onClick() -> Registration Validate (JS ___)
+      = POST -> Registration Form Validate (___)
+   2. Email Welcome + Activation Link
+   3. Activation Link
+      = new User
+      = 
+
+
+   @authz(user.is_active = True)
+F. Update User Profile
+   4. User Profile
+      + Contact Information
+      + Company
+      + n * Phone Numbers
+      = onClick() -> Profile Form Validate (JS ___)
+      = POST -> Server Form Validate (___)
+   5. View Available Courses (A.1)
+
+   @authz(instructor, manager)
+F. Instructor Availability
+   a. Login || Register
+
+      @perm
+   b. Add Course
+
+      @perm
+   c. Add Course Availability
+      
+
+
+
+Admin
+-----
+PhoneInline
+PersonAdmin
+InstructorAvailabilityInline
+InstructorAdmin
+CourseAdmin
+ClientAvailabilityInline
+CourseRequestAdmin
+CourseScheduleAdmin
+
+Urls
+----
+    #(r'^wbcms/', include('wbcms.tiger.urls')),
+
