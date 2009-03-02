@@ -8,7 +8,7 @@ class PhoneInline(admin.TabularInline):
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('first_name','last_name','company','email')
+    list_display = ('first_name','last_name','company','email',)
     inlines = [PhoneInline]
 
     verbose_name_plural = "People"
@@ -26,7 +26,8 @@ class InstructorAdmin(admin.ModelAdmin):
 
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name','subject')
+    list_display = ('name','subject',)
+    prepopulated_fields = {'slug': ('name',) }
 
 
 class ClientAvailabilityInline(admin.TabularInline):
@@ -34,7 +35,7 @@ class ClientAvailabilityInline(admin.TabularInline):
 
 
 class CourseRequestAdmin(admin.ModelAdmin):
-    list_display = ('person')
+    list_display = ('person', )
 
     inlines = [ ClientAvailabilityInline ]
 

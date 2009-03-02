@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Courses{% endblock %}
+{% block devel %}
+div.course { padding: 2em; margin-bottom: 1em }
+{% endblock devel %}
+{% block content %}
+{% if object_list %}
+
+{% for object in object_list %}
+<div class="course" style="background: {% cycle '#f7f7f7' '#fefefe' %}">
+    <h2><a href="{% url tiger.views.course_detail object.slug %}">{{ object.name }}</a></h2> 
+    <h4>{{ object.subject }}</h4>
+    <p class="desc">{{ object.description }}</p>
+</div>
+{% endfor %}
+</fieldset>
+{% else %}
+We currently have no available courses.
+{% endif %}
+{% endblock content %}

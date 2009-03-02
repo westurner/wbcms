@@ -3,7 +3,7 @@
 import os
 PROJECT_NAME='wbcms'
 PROJECT_PATH = '/www/dev.ts.wrd.nu'
-PROJECT_URL = 'http://dev.ts.wrd.nu'
+PROJECT_URL = 'http://dev.ts.wrd.nu:8080'
 
 def _PATH(*args):
     return os.path.join(PROJECT_PATH, *args)
@@ -102,6 +102,9 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'wbcms.tiger',
     'django_extensions',
+    'registration'
 )
+
+
 
 FORCE_SCRIPT_NAME=""
