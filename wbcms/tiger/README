@@ -22,7 +22,7 @@ See the `Django FAQ`_ for more information
 
 Models
 ------
-Company(models.Model):
+Cmpany(models.Model):
 Person(models.Model):
 Instructor(Person):
 class Student(Person):

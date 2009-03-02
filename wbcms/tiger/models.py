@@ -30,12 +30,12 @@ class Person(models.Model):
         blank=True)
     city = models.CharField(verbose_name="City", max_length=42)
     state = us_models.USStateField(verbose_name="State")
-    zip_code = models.CharField(verbose_name="Zip Code", 
+    zip_code = models.CharField(verbose_name="Zip Code",
         max_length=10)
     email = models.EmailField(verbose_name="Email Address")
     
     def __unicode__(self):
-        return "%s %s %s" % (self.first_name, 
+        return "%s %s %s" % (self.first_name,
             self.middle_name and ('%s.' % self.middle_name) or '',
             self.last_name)
 
@@ -115,16 +115,18 @@ class ClientAvailability(TimeWindow):
         verbose_name_plural = verbose_name = "Client Availability"
 
 
-COURSE_STATUSES (
-   (-2, Proposed),
-   (-1, Draft),
-   ( 1, Available)
+COURSE_STATUSES = (
+   (-3, "Requested"),
+   (-2, "Proposed"),
+   (-1, "Draft"),
+   ( 1, "Available")
 )
 class Course(models.Model):
     """
     A ``course`` offered through the TDC
     """
     name = models.CharField(verbose_name="Course Name", max_length=256)
+    slug = models.SlugField()
     subject = models.CharField(verbose_name="Course Subject", max_length=128)
     description = models.TextField(verbose_name="Course Description")
     cost=models.DecimalField(verbose_name="Course Cost",
@@ -136,7 +138,8 @@ class Course(models.Model):
     min_required_students = models.IntegerField(
         verbose_name="Minimum number of students",
         blank=True)
-    status = IntegerField(verbose_name="Course Status",
+
+    status = models.IntegerField(verbose_name="Course Status",
                           choices=COURSE_STATUSES,
                           default=-1)
 
