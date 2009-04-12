@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="course_full">
-    <h1><a href="{% url tiger.views.profile_detail object.slug %}" title="{{ object.first_name }}"> {{ object.first_name }} {{ object.last_name }}</a></h1>
+    <h1><a href="{% url tiger.views.course_detail object.slug %}" title="{{ object.first_name }}"> {{ object. }}</a></h1>
     <h2> {{ object.subject }} </h2>
     <p> {{ object.description }} </p>
     <dl>

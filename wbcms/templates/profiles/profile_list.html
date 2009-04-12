@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}People{% endblock %}
+{% block devel %}
+div.course { padding: 2em; margin-bottom: 1em }
+{% endblock devel %}
+{% block content %}
+{% if object_list %}
+<div class="profile_list">
+{% for object in object_list %}
+<div class="row" style="background: {% cycle '#f7f7f7' '#fefefe' %}">
+{{ object }}
+</div>
+{% endfor %}
+</fieldset>
+</div>
+{% else %}
+No profiles could be found.
+{% endif %}
+{% endblock content %}

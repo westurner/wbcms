@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+{{ object.name }} - Profile
+{% endblock title %}
+
+{% block content %}
+<div class="profile_full">
+    <h1><a href="{{ profile.get_absolute_url }}" title="{{ profile.first_name }} {{ profile.last_nae }}"> {{ profile.first_name }} {{ profile.full_name }}</a></h1>
+    {{ object }}
+
+
+</div>
+
+
+{% endblock content %}

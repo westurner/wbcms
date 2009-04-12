@@ -3,7 +3,7 @@
 import os
 PROJECT_NAME='wbcms'
 PROJECT_PATH = '/www/dev.ts.wrd.nu'
-PROJECT_URL = 'http://dev.ts.wrd.nu:8080'
+PROJECT_URL = 'http://dev.ts.wrd.nu'
 
 def _PATH(*args):
     return os.path.join(PROJECT_PATH, *args)
@@ -16,6 +16,11 @@ def _URL(*args):
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+if DEBUG:
+     from utils.debug.email import BogusSMTPConnection
+     from django.core import mail
+     mail.SMTPConnection = BogusSMTPConnection
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -24,7 +29,6 @@ MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = _PATH('var','testdb.sqlite')             # Or path to database file if using sqlite3.
-print DATABASE_NAME
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -102,9 +106,18 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'wbcms.tiger',
     'django_extensions',
-    'registration'
+    'registration',
+    'profiles'
 )
 
+AUTH_PROFILE_MODULE = 'tiger.Person'
 
 
+ACCOUNT_ACTIVATION_DAYS = 3
+EMAIL_HOST='localhost'
+EMAIL_PORT=25
+EMAIL_HOST_USER='dj'
+EMAIL_HOST_PASSWORD='dj'
+
+# WSGI Workaround
 FORCE_SCRIPT_NAME=""

@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.localflavor.us import models as us_models
 from django.contrib.auth.models import User
 
+import locale
+locale.setlocale( locale.LC_ALL, '' )
+
+
+
+
 class Company(models.Model):
     """
     A company a ``Person`` may work for.
@@ -20,10 +26,12 @@ class Person(models.Model):
     A person. With name, ``Company``, address, and person information
     """
     first_name = models.CharField(verbose_name="First Name", max_length=42)
-    middle_name = models.CharField(verbose_name="Middle Name", max_length=42)
+    middle_name = models.CharField(verbose_name="Middle Name", max_length=42,
+        blank=True)
     last_name = models.CharField(verbose_name="Last Name", max_length=42)
     company = models.ForeignKey('Company', verbose_name="Company",
-        related_name="person_worksfor_company")
+        related_name="person_worksfor_company",
+        blank=True,null=True)
     addr_1 = models.CharField(verbose_name="Address Line 1", max_length=42,
         blank=True)
     addr_2 = models.CharField(verbose_name="Address Line 2", max_length=42,
@@ -33,11 +41,22 @@ class Person(models.Model):
     zip_code = models.CharField(verbose_name="Zip Code",
         max_length=10)
     email = models.EmailField(verbose_name="Email Address")
-    
+    user = models.ForeignKey(User,unique=True,verbose_name="User")
+
     def __unicode__(self):
         return "%s %s %s" % (self.first_name,
             self.middle_name and ('%s.' % self.middle_name) or '',
             self.last_name)
+
+    class Meta:
+        verbose_name_plural = "People"
+
+    def get_absolute_url(self):
+        return ('profiles_profile_detail' (), {'username':self.user.username})
+        
+    def full_name(self):
+        return " ".join(self.first_name, self.middle_name, self.last_name)
+    
 
 
 class Instructor(Person):
@@ -46,6 +65,9 @@ class Instructor(Person):
     """
     courses = models.ManyToManyField('Course', 
         related_name="ability_to_teach")
+        
+    def num_courses(self):
+      return len(self.courses)
 
 
 class Student(Person):
@@ -84,8 +106,8 @@ class TimeWindow(models.Model):
         default=False)
 
     def __unicode__(self):
-        return "%s -> %s" % (self.starting.strftime("%D %l:%M %p"),
-                             self.ending.strftime("%D %l:%M %p"))
+        return "%s -> %s" % (self.start.strftime("%D %l:%M %p"),
+                             self.end.strftime("%D %l:%M %p"))
     
     class Meta:
         abstract = True
@@ -199,5 +221,12 @@ class CourseSchedule(models.Model):
     def _number_of_students(self):
         return self.students.count()
 
+    def __str__(self):
+        return "%s (%s)" % (course.name, instructor.full_name())
+
+    def value(self):
+        return locale.currency(self.course.cost*self._number_of_students(),
+            grouping=True)
+
     class Meta:
-        verbose_name = "Course Schedule"
+        verbose_name = "Scheduled Course"
