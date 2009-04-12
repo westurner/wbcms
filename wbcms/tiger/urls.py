@@ -17,8 +17,6 @@ urlpatterns = patterns('',
         (r'courses/$', course_list),
         (r'courses/(?P<slug>[\w-]+)', course_detail),
         (r'courses/(?P<slug>[\w-]+)/request', course_request_create),
-        (r'profile/$', profile_detail),
-        (r'profile/new', profile_create),
-        (r'profile/update', profile_update),
+
     #(r'^wbcms/', include('wbcms.tiger.urls')),
 )

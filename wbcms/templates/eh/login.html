@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<form id="course_request" method="POST">
+<fieldset class="module aligned">
+{% include "form_snippet.html" %}
+</fieldset>
+<div class="submit-row">
+<input class="default" type="submit" name="_save" value="Submit"/>
+</div>
+</form>
+{% endblock content %}

@@ -8,14 +8,7 @@ from django.template import RequestContext
 from wbcms.tiger.forms import *
 from wbcms.tiger.models import *
 
-#@login_required
-def course_request_create(request,slug=None):
-    return create_object(request, form_class=CourseRequestForm)
-
-#@login_required
-def course_request_update(request):
-    return update_object(request, form_class=CourseRequestForm)
-
+# Courses
 
 def course_list(request):
     return object_list(request, Course.objects.filter(status__gt=0))
@@ -25,14 +18,15 @@ def course_detail(request, id=None, slug=None):
 
     return object_detail(request, queryset=queryset, slug_field='slug', slug=slug)
 
-def profile_create(request):
-    return create_object(request, model=Person)
-    
-def profile_update(request):
-    return update_object(request, model=Person)
-    
-def profile_detail(request):
-    try:
-        return object_detail(request, queryset=Person.objects.filter(user__eq=request.user))
-    except IndexError:
-        return redirect_to('/tiger/profile/new')
+# Course Requests
+
+@login_required
+def course_request_create(request,slug=None):
+    return create_object(request, form_class=CourseRequestForm)
+
+@login_required
+def course_request_update(request):
+    return update_object(request, form_class=CourseRequestForm)
+
+
+

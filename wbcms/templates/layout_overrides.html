@@ -41,7 +41,7 @@
 <li><a class="n_about" href="/about" title="About">About</a></li>
 <li><a class="n_courses" href="{% url tiger.views.course_list %}" title="Courses">Courses</a></li>
 {% if user.is_authenticated %}
-<li><a class="n_profile" href="{% url tiger.views.profile_detail %}" title="Profile">Profile</a></li>
+<li><a class="n_profile" href="{% url profiles.views.profile_detail user.username %}" title="Profile">Profile</a></li>
 <li><a class="n_admin" href="/admin/" title="Admin">Admin</a></li>
 <li><a class="n_admin-docs" href="/admin/doc/" title="Docs">Docs</a></li>
 {% else %}
