@@ -51,6 +51,7 @@ class Person(models.Model):
     class Meta:
         verbose_name_plural = "People"
 
+    @models.permalink
     def get_absolute_url(self):
         return ('profiles_profile_detail' (), {'username':self.user.username})
         
@@ -171,6 +172,10 @@ class Course(models.Model):
     def __unicode__(self):
         return self.name
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('tiger.views.course_detail',[self.slug])
+
 
 COURSE_REQUEST_STATUSES = (
     ('Pending', (
@@ -191,11 +196,15 @@ class CourseRequest(models.Model):
     person = models.ForeignKey(Person, verbose_name="Client")
     course = models.ForeignKey(Course, verbose_name="Requested Course")
     number_of_students = models.IntegerField(verbose_name="Number of Students")
+    availability_start = models.DateTimeField(verbose_name="Start",blank=True,
+        null=True)
+    availability_end = models.DateTimeField(verbose_name="End",blank=True,
+        null=True)
     status = models.IntegerField(verbose_name="Request Status",
         choices=COURSE_REQUEST_STATUSES, default=-1)
-    schedule = models.ForeignKey('CourseSchedule',
-        verbose_name="Course Schedule",
-        related_name="scheduled_course_request",
+    session = models.ForeignKey('CourseSession',
+        verbose_name="Course Session",
+        related_name="course_request",
         null=True,
         blank=True)
 
@@ -203,7 +212,7 @@ class CourseRequest(models.Model):
         verbose_name = "Course Request"
 
 
-class CourseSchedule(models.Model):
+class CourseSession(TimeWindow):
     """
     A scheduled ``CourseRequest`` with an ``Instructor`` and one or more
     ``CourseSession``s. Subclass of ``CourseRequest``
@@ -217,6 +226,8 @@ class CourseSchedule(models.Model):
     students = models.ManyToManyField(Student,
         verbose_name="Course Students",
         related_name="student_courseschedule")
+    location = models.TextField(verbose_name="Location")
+    description = models.TextField(verbose_name="Description")
 
     def _number_of_students(self):
         return self.students.count()
@@ -229,4 +240,4 @@ class CourseSchedule(models.Model):
             grouping=True)
 
     class Meta:
-        verbose_name = "Scheduled Course"
+        verbose_name = "Course Session"
