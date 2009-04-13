@@ -83,8 +83,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'pagination.middleware.PaginationMiddleware'
 )
+
+#Debug toolbar
+if DEBUG:
+    INTERNAL_IPS = ('127.0.0.1',)
 
 ROOT_URLCONF = 'wbcms.urls'
 
@@ -107,11 +112,14 @@ INSTALLED_APPS = (
     'wbcms.tiger',
     'django_extensions',
     'registration',
-    'profiles'
+    'profiles',
+    'debug_toolbar',
+    'utils'
 )
 
 AUTH_PROFILE_MODULE = 'tiger.Person'
-
+LOGIN_URL = '/login'
+LOGOUT_URL = '/logout'
 
 ACCOUNT_ACTIVATION_DAYS = 3
 EMAIL_HOST='localhost'

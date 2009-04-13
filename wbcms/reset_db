@@ -1,0 +1,7 @@
+#!/bin/sh
+
+./manage.py reset_db --noinput
+./manage.py syncdb --noinput
+./manage.py createsuperuser --noinput --username=tiger --email=tiger@wrd.nu
+./manage.py set_fake_passwords --password=tiger
+./manage.py loaddata courses.json
