@@ -8,10 +8,16 @@ div.course { padding: 2em; margin-bottom: 1em }
 {% if object_list %}
 
 {% for object in object_list %}
-<div class="course" style="background: {% cycle '#f7f7f7' '#fefefe' %}">
-    <h2><a href="{% url tiger.views.course_detail object.slug %}">{{ object.name }}</a></h2> 
+<div class="yui-ge course" style="background: {% cycle '#f7f7f7' '#fefefe' %}">
+    <div class="yui-g first">
+    <h2><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h2> 
     <h4>{{ object.subject }}</h4>
     <p class="desc">{{ object.description }}</p>
+    </div>
+    <div class="yui-g">
+    
+    <div class="button button_request"><a href="{% url tiger.views.course_request_create object.slug %}">Request this course</a></div>
+    </div>
 </div>
 {% endfor %}
 </fieldset>

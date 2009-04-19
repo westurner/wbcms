@@ -15,3 +15,4 @@ tmp/
 setup.sh
 sp
 wrkz.log
+settings.prd.py

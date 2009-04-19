@@ -1,16 +1,21 @@
 from django.conf.urls.defaults import *
 
 import settings
+import utils.views
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
     (r'^accounts/', include('registration.urls')),
-    (r'^users/', include('profiles.urls')),
+    (r'^profiles/', include('profiles.urls')),
     
+    (r'^login$', utils.views.login),
+    url(r'^logout/$', auth_views.logout,
+        {'template_name': 'registration/logout.html'}),
     
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
