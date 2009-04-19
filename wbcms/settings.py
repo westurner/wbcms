@@ -2,8 +2,8 @@
 
 import os
 PROJECT_NAME='wbcms'
-PROJECT_PATH = '/www/dev.ts.wrd.nu'
-PROJECT_URL = 'http://dev.ts.wrd.nu'
+PROJECT_PATH = '/www/beta.ts.wrd.nu'
+PROJECT_URL = 'http://beta.ts.wrd.nu'
 
 def _PATH(*args):
     return os.path.join(PROJECT_PATH, *args)
