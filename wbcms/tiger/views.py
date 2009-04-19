@@ -32,13 +32,15 @@ def course_request_create(request,slug):
     # try to get the course by slug
     try:
         course = lookup_object(Course, None, slug, 'slug')
-        initial = {'course':course.id}
+        initial = {'course':course.id,
+                'person':request.user.get_profile().id}
     except:
-        return redirect_to('/courses')
+        return redirect_to(request,'/courses')
     
     model, form_class = CourseRequest, CourseRequestForm
     if request.method == 'POST':
         form = form_class(request.POST, request.FILES,initial=initial)
+
         if form.is_valid():
             new_object = form.save()
             if request.user.is_authenticated():

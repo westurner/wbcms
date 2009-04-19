@@ -19,7 +19,7 @@ class CourseRequestForm(forms.Form):
 class CourseRequestForm(ModelForm):
     class Meta:
         model = CourseRequest
-        fields = ('course','number_of_students','availability_start','availability_end')
+        fields = ('course','person','number_of_students','availability_start','availability_end')
 
 class ProfileForm(ModelForm):
     class Meta:
