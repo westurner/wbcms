@@ -16,5 +16,5 @@ debug.technical_500_response = null_technical_500_response
 
 
 if __name__ == '__main__':
-    run_simple('localhost', 8000, DebuggedApplication(WSGIHandler(), True))
+    run_simple('localhost', 8002, DebuggedApplication(WSGIHandler(), True))
 

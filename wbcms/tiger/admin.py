@@ -46,8 +46,10 @@ class CourseRequestAdmin(admin.ModelAdmin):
     inlines = [ ClientAvailabilityInline ]
 
 
-class CourseScheduleAdmin(admin.ModelAdmin):
+class CourseSessionAdmin(admin.ModelAdmin):
     list_display = ['course','instructor','_number_of_students','value']
+    
+    filter_horizontal = ('students',)
 
 
 admin.site.register(Company)
@@ -58,5 +60,5 @@ admin.site.register(InstructorAvailability)
 admin.site.register(ClientAvailability)
 admin.site.register(Course,CourseAdmin)
 admin.site.register(CourseRequest,CourseRequestAdmin)
-admin.site.register(CourseSchedule, CourseScheduleAdmin)
+admin.site.register(CourseSession, CourseSessionAdmin)
 
