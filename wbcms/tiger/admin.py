@@ -8,7 +8,7 @@ class PhoneInline(admin.TabularInline):
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('last_name','first_name','company','email')
+    list_display = ('last_name','first_name','company')
     inlines = [PhoneInline]
 
     verbose_name_plural = "People"

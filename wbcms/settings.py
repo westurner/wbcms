@@ -1,25 +1,22 @@
 # Django settings for wbcms project.
 
 import os
-PROJECT_NAME='wbcms'
-PROJECT_PATH = '/www/beta.ts.wrd.nu'
-PROJECT_URL = 'http://beta.ts.wrd.nu'
+
+try:
+    from local_settings import PROJECT_NAME, PROJECT_PATH, PROJECT_URL, DEBUG
+except ImportError, e:
+    DEBUG = False
+    PROJECT_NAME = os.path.split(os.path.dirname(os.path.abspath(__file__)))[-1]
+    PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),'..'))
+    PROJECT_URL = 'http://localhost:8002'
 
 def _PATH(*args):
     return os.path.join(PROJECT_PATH, *args)
 
 def _URL(*args):
-    return '/'.join(*args)
+    return os.path.join(*args)
 
-
-
-DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-
-if DEBUG:
-     from utils.debug.email import BogusSMTPConnection
-     from django.core import mail
-     mail.SMTPConnection = BogusSMTPConnection
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
@@ -49,7 +46,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -91,7 +88,7 @@ MIDDLEWARE_CLASSES = (
 if DEBUG:
     INTERNAL_IPS = ('127.0.0.1',)
 
-ROOT_URLCONF = 'wbcms.urls'
+ROOT_URLCONF = '.'.join([PROJECT_NAME, 'urls'])
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -109,12 +106,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.flatpages',
-    'wbcms.tiger',
+    'tiger',
     'django_extensions',
     'registration',
     'profiles',
-    'debug_toolbar',
-    'utils'
+    'utils',
 )
 
 AUTH_PROFILE_MODULE = 'tiger.Person'
@@ -122,10 +118,8 @@ LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 
 ACCOUNT_ACTIVATION_DAYS = 3
-EMAIL_HOST='localhost'
-EMAIL_PORT=25
-EMAIL_HOST_USER='dj'
-EMAIL_HOST_PASSWORD='dj'
 
-# WSGI Workaround
-FORCE_SCRIPT_NAME=""
+try:
+    from local_settings import *
+except:
+    pass

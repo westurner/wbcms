@@ -43,6 +43,7 @@ class Person(models.Model):
     email = models.EmailField(verbose_name="Email Address")
     user = models.ForeignKey(User,unique=True,verbose_name="User")
 
+
     def __unicode__(self):
         return "%s %s %s" % (self.first_name,
             self.middle_name and ('%s.' % self.middle_name) or '',
@@ -56,7 +57,7 @@ class Person(models.Model):
         return ('profiles_profile_detail' (), {'username':self.user.username})
         
     def full_name(self):
-        return " ".join(self.first_name, self.middle_name, self.last_name)
+        return " ".join([self.first_name, self.middle_name, self.last_name])
     
 
 
@@ -146,7 +147,7 @@ COURSE_STATUSES = (
 )
 class Course(models.Model):
     """
-    A ``course`` offered through the TDC
+    A ``course`` list entry
     """
     name = models.CharField(verbose_name="Course Name", max_length=256)
     slug = models.SlugField()
@@ -207,6 +208,13 @@ class CourseRequest(models.Model):
         related_name="course_request",
         null=True,
         blank=True)
+
+    def __unicode__(self):
+        return u"%s (%s)" % (self.course.name, self.person.full_name())
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('tiger.views.course_request_detail',[self.id])
 
     class Meta:
         verbose_name = "Course Request"

@@ -290,3 +290,78 @@ width:920px;
 
 
 
+
+
+/* sdfsdf */
+
+p.small, p.small a { font-size: 1em !important; }
+
+#branding {
+float: left !important; }
+
+#branding h1 {
+color:#f0f0f0 !important;
+font-size:18px !important;
+font-weight:normal !important;
+margin:8px 0 !important;
+padding:0 10px !important;
+}
+
+#header {
+background:#717478  !important;
+color: #f0f0f0 !important;
+overflow:hidden !important;
+border-bottom: 1px solid #ddd !important; 
+padding-top:10px !important;
+}
+
+div.breadcrumbs {
+background: none !important;
+font-size: 1em !important;
+border: 0 !important; 
+}
+
+#user-tools {
+font-size:1em !important;
+padding:1em 10px !important;
+position:relative !important;
+
+right:0 !important;
+text-align:right !important;
+top:0 !important;
+z-index:10 !important;
+}
+
+.module h2, .module caption, .inline-group h2 {
+background:#CCCCCC none repeat scroll 0 0 !important;
+}
+
+/* WBCMS */
+
+#content-wrapper { width: 98% !important; }
+input, textarea { margin: 8px 0 !important;  }
+
+#djDebug .panelContent { background: #ccc !important; }
+
+#djDebug .panelContent h3 { color: #333 !important; border-bottom: 0 !important; }
+
+#djDebugToolbar { background: #ccc !important; border: 0 !important; }
+#djDebug a { color: #777 !important; }
+#djDebug .panelContent { border: 0 !important; top: 30px !important; }
+#djDebugToolbar li { border-left: 0 !important; color: #999 !important; }
+#djDebugToolbar li:hover { background: #aaa !important; }
+#djDebugToolbar li:hover a { color: white !important; }
+#djDebugToolbarHandle { background: #ccc !important; border: 0 !important; }
+#djDebugToolbar li:last-child {
+border-right:0 !important;
+}
+
+#nav-top ul li { list-style-type: none !important; }
+#nav-top ul li a { color: #5B80B2 !important; }
+
+#logo h1 a:hover { color: #5B80B2 !important; }
+
+a.section:link, a.section:visited,.module h2, .module caption, .inline-group h2  { color: #555 !important; }
+
+
+
