@@ -5,8 +5,8 @@
 
 {% block content %}
 <div class="course_full">
-    <h1><a href="{% url tiger.views.course_detail object.slug %}" title="{{ object.first_name }}"> {{ object. }}</a></h1>
-    <h2> {{ object.subject }} </h2>
+    <h1><a href="{% url profile_detail object.id %}" title="{{ object.first_name }}"> {{ object.full_name }}</a></h1>
+    <h2> {{ object.full_name}} </h2>
     <p> {{ object.description }} </p>
     <dl>
         <dt>Minimum Number of Students</dt>

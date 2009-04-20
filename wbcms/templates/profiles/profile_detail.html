@@ -5,11 +5,22 @@
 
 {% block content %}
 <div class="profile_full">
-    <h1><a href="{{ profile.get_absolute_url }}" title="{{ profile.first_name }} {{ profile.last_nae }}"> {{ profile.first_name }} {{ profile.full_name }}</a></h1>
-    {{ object }}
+    <h1><a href="{{ object.get_absolute_url }}" title="{{ object.full_name }}"> {{ profile.full_name }}</a></h1>
 
+<table class="contact_full">
+<tr><td>{{ profile.addr_1 }}</td></tr>
+<tr><td>{{ profile.addr_2 }}</td></td>
+<tr><td>{{ profile.city }}</td></tr>
+<tr><td>{{ profile.state }}</td></tr>
+<tr><td>{{ profile.phone }}</td></tr>
+<tr><td>{{ profile.email }}</td></tr>
+
+</table>
 
 </div>
+
+
+<a href="{% url profiles_edit_profile %}">Update my information</a>
 
 
 {% endblock content %}

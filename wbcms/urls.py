@@ -3,15 +3,16 @@ from django.conf.urls.defaults import *
 import settings
 import utils.views
 
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
-    (r'^accounts/', include('registration.urls')),
-    (r'^profiles/', include('profiles.urls')),
+    (r'^users/', include('registration.urls')),
+    (r'^accounts/', include('profiles.urls')),
     
     (r'^login$', utils.views.login),
     url(r'^logout/$', auth_views.logout,
@@ -23,9 +24,21 @@ urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')), 
 
     # Uncomment the next line to enable the admin:
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT}),
+
         
     (r'^admin/(.*)', admin.site.root),
+    
     (r'^', include('wbcms.tiger.urls')),
 )
+
+if settings.DEBUG:
+    from django.contrib import databrowse
+    from tiger.models import *
+    databrowse.site.register(Person)
+    databrowse.site.register(Course)
+    databrowse.site.register(CourseRequest)
+    urlpatterns += patterns('',
+        (r'^db/(.*)', login_required(databrowse.site.root)),
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT}),
+        )

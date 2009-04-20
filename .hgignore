@@ -15,4 +15,5 @@ tmp/
 setup.sh
 sp
 wrkz.log
-settings.prd.py
+local_settings.py
+nbproject/
