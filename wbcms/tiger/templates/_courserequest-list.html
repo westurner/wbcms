@@ -1,0 +1,16 @@
+{% if course_requests %}
+<thead>
+<tr><th>Course</th><th>Original Request</th><th>Status</th></tr>
+</thead>
+<tbody>
+{% for object in course_requests %}
+{# course, date, status #}
+<tr><td><a href="{% url course_request_detail object.id %}"> {{ object.course }}</a></td>
+<td>{{ object.created }}</td>
+<td>{{ object.status }}</td>
+</tr>
+{% endfor %}
+</tbody>
+{% else %}
+<p>No course requests</p>
+{% endif %}

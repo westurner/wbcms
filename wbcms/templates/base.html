@@ -1,4 +1,19 @@
-{% extends "layouts/layout_1_column_full_width.html" %}
+{% extends "layouts/layout_2_columns_narrow_left_column.html" %}
 {% block 1 %}
-    {% block content %}{% endblock content %}
+{% block nav-main %}
+{% include "shared/navmenu.html" %}
+{% endblock nav-main %}
 {% endblock 1 %}
+
+{% block 2 %}
+    {% block messages %}
+    {% if messages %}  
+    <div id="messages">  
+      {% for message in messages %}  
+         <p class="m{{ message|slice:"0:1"}}">{{ message|slice:"2:" }}</p>  
+      {% endfor %}  
+    </div>  
+    {% endif %}
+    {% endblock messages %}
+    {% block content %}{% endblock content %}
+{% endblock 2 %}

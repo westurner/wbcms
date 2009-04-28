@@ -13,7 +13,11 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from tiger.forms import *
 from tiger.models import *
 
+from profiles.views import create_profile
+
 from django.utils.translation import ugettext as _
+
+from functools import partial
 
 # Courses
 
@@ -53,60 +57,60 @@ def course_request_create(request,slug):
 
     """
     
-    # Select 
+    initial_form_data = {}
+
+    course = lookup_object(Course, None, slug, 'slug')                 
+    initial_form_data['course'] = course.id
+
+
+    # Lookup profile or redirect to create_profile
     try:
-        course = lookup_object(Course, None, slug, 'slug')
-        try:
-            person = request.user.get_profile()
-        except:
-            return redirect_to(request,reverse('profiles_create_profile'))
-                    
-        initial = {'course':course,
-                'person':person}
+        person = request.user.get_profile()
+        initial_form_data['person'] = person.id
     except:
-        # 
-        return redirect_to(request,reverse('course_list'))
-        
+        return create_profile(request, success_url=reverse('course_request_create',args=[course.slug]))
+              
+
     
     model, form_class = CourseRequest, CourseRequestForm
+    
     if request.method == 'POST':
-        form = form_class(request.POST, request.FILES,initial=initial)
+        form = form_class(request.POST, request.FILES,initial=initial_form_data,
+            min_students=course.min_required_students)
 
         if form.is_valid():
-            new_object = form.save()
-            if request.user.is_authenticated():
-                request.user.message_set.create(message=_("The %(verbose_name)s was created successfully.") % {"verbose_name": model._meta.verbose_name})
-            return redirect_to(post_save_redirect, new_object)
+            new_course_request = form.save(commit=False)
+            new_course_request.person = person
+            new_course_request.course = course
+            new_course_request.save()
+            
+            request.user.message_set.create(message=_("S The %(verbose_name)s was created successfully.") % {"verbose_name": model._meta.verbose_name})
+            return redirect_to(request,reverse('course_request_detail',args=[new_course_request.id]))
     else:
-        form = form_class(initial=initial)
+        form = form_class(initial=initial_form_data)
 
     # Create the template, context, response
     template_name = "%s/%s_form.html" % (model._meta.app_label, model._meta.object_name.lower())
     t = loader.get_template(template_name)
     c = RequestContext(request, {
         'form': form,
+        'course':course
     })
     return HttpResponse(t.render(c))
-    
-    
-    # create a form for the course request
-    #CourseRequestForm(initial={'course':course.id})
-    
-    #from django.forms.models import modelformset_factory
-    #CourseRequestFormSet = modelformset_factory(CourseRequest)
-    #formset = CourseRequestFormSet(queryset=
-    
-    #BookFormSet = inlineformset_factory(Course, Book)
-    #author = Author.objects.get(name=u'Mike Royko')
-    #formset = BookFormSet(instance=author)
-    #return create_object(request, model=CourseRequest, form_class=CourseRequestForm)
 
+@login_required
 def course_request_detail(request, id=None, slug=None):
     queryset=CourseRequest.objects.filter()
     return object_detail(request, queryset=queryset, object_id=id)
 
+@login_required
 def course_request_list(request):
-    return object_list(request, CourseRequest.objects.filter(person=request.user.get_profile()))
+    try:
+        person = request.user.get_profile()
+    except:
+        request.user.message_set.create(message=_("S Please update your account information."))
+        return create_profile(request, success_url=reverse('course_request_list'))
+    return object_list(request, CourseRequest.objects.filter(person=person))
 
 @login_required
 def course_request_update(request):

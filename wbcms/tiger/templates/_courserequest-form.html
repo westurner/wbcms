@@ -1,0 +1,9 @@
+<form id="course_request" method="POST" action="{% url course_request_create course.slug %}>
+<fieldset class="module aligned">
+
+{% include "form_snippet.html" %}
+</fieldset>
+<div class="submit-row">
+<input class="default" type="submit" name="_save" value="Submit"/>
+</div>
+</form>

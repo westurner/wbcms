@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 import locale
 locale.setlocale( locale.LC_ALL, '' )
 
-
-
+from django_extensions.db.models import TimeStampedModel
+from django_extensions.db.fields import UUIDField
 
 class Company(models.Model):
     """
@@ -21,7 +21,7 @@ class Company(models.Model):
         verbose_name_plural = "Companies"
 
 
-class Person(models.Model):
+class Person(TimeStampedModel):
     """
     A person. With name, ``Company``, address, and person information
     """
@@ -41,13 +41,12 @@ class Person(models.Model):
     zip_code = models.CharField(verbose_name="Zip Code",
         max_length=10)
     email = models.EmailField(verbose_name="Email Address")
-    user = models.ForeignKey(User,unique=True,verbose_name="User")
+    user = models.ForeignKey(User,unique=True,verbose_name="User",blank=True,
+        null=True)
 
 
     def __unicode__(self):
-        return "%s %s %s" % (self.first_name,
-            self.middle_name and ('%s.' % self.middle_name) or '',
-            self.last_name)
+        return self.full_name()
 
     class Meta:
         verbose_name_plural = "People"
@@ -57,7 +56,9 @@ class Person(models.Model):
         return ('profiles_profile_detail' (), {'username':self.user.username})
         
     def full_name(self):
-        return " ".join([self.first_name, self.middle_name, self.last_name])
+        return "%s %s %s" % (self.first_name,
+            self.middle_name and ('%s.' % self.middle_name) or '',
+            self.last_name)
     
 
 
@@ -70,6 +71,9 @@ class Instructor(Person):
         
     def num_courses(self):
       return len(self.courses)
+      
+    def availability_entries(self):
+        return self.instructoravailability_set.count()
 
 
 class Student(Person):
@@ -84,7 +88,7 @@ PHONE_TYPES = (
     ('cell','Cell'),
     ('home','Home')
 )
-class Phone(models.Model):
+class Phone(TimeStampedModel):
     """
     A phone number for a ``Person``
     """
@@ -96,7 +100,7 @@ class Phone(models.Model):
         help_text="555-555-5555")
  
 
-class TimeWindow(models.Model):
+class TimeWindow(TimeStampedModel):
     """
     A generic period of time between start and end. May be open or not open.
     Abstract base class.
@@ -145,7 +149,7 @@ COURSE_STATUSES = (
    (-1, "Draft"),
    ( 1, "Available")
 )
-class Course(models.Model):
+class Course(TimeStampedModel):
     """
     A ``course`` list entry
     """
@@ -179,21 +183,19 @@ class Course(models.Model):
 
 
 COURSE_REQUEST_STATUSES = (
-    ('Pending', (
             (-1, 'Unverified'),
             ( 1, 'Verified'),    # Pending
-            ( 2, 'Deferred') )), # Waiting List
-    ('Scheduled', (
-            ( 3, 'Scheduled'), )),
-    ('Cancelled', (
+            ( 2, 'Deferred'), # Waiting List
+            ( 3, 'Scheduled'), # Has a Session
             ( 4, 'Cancelled - By Client'),
-            ( 5, 'Cancelled - Duplicate') ))
+            ( 5, 'Cancelled - Duplicate')
 )
-class CourseRequest(models.Model):
+class CourseRequest(TimeStampedModel):
     """
     A request made by (or on behalf of) a ``client``, who would like to
     schedule a ``Course``s during one or more periods of ``Availability``.
     """
+    id = UUIDField(primary_key=True)
     person = models.ForeignKey(Person, verbose_name="Client")
     course = models.ForeignKey(Course, verbose_name="Requested Course")
     number_of_students = models.IntegerField(verbose_name="Number of Students")

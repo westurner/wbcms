@@ -1,5 +1,5 @@
 {% extends 'layouts/layout_base.html' %}
-
+{% load media %}{% load adminmedia %}
 {% block head %}
   <head>
     {% block meta %}
@@ -12,9 +12,9 @@
 
     {% block css %}
     {% block css.shared %}
-	<link rel="stylesheet" type="text/css" href="/media/css/reset-fonts-grids.css" />
-	<link rel="stylesheet" href="/media/css/styles.css" type="text/css" />
-	<link rel="stylesheet" href="/media/admin/css/forms.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="{% media_prefix %}css/reset-fonts-grids.css" />
+	<link rel="stylesheet" href="{% media_prefix %}css/styles.css" type="text/css" />
+	<link rel="stylesheet" href="{% admin_media_prefix %}css/forms.css" type="text/css" />
 	<style type="text/css">{% block devel %}{% endblock devel %}</style>
     {% endblock css.shared %}
     {% block css.custom %}{% endblock css.custom %}
@@ -29,31 +29,29 @@
 
 {% block header %}
 <!-- BEGIN header -->
-<div id="hd">
-{% block header_content %}{% include 'shared/header.html' %}{% endblock header_content %}
-{% block nav-user %}<div id="nav-user" style="text-align:right;">
+<div id="header">
+
+{% block nav-user %}
+<div id="nav-user" style="text-align:right;">
 {% if user.is_authenticated %}welcome, {{ user.username }} <a href="/logout">logout</a>{% endif %}
+{% if user.is_authenticated %}
+<a class="n_profile" href="{% url profiles.views.profile_detail user.username %}" title="Profile">My Account</a>
+{% if user.is_staff %}
+<a class="n_admin" href="/admin/" title="Admin">Admin</a>
+{% endif %}
+{% endif %}
 </div>
+
+
 {% endblock nav-user %}
 
-<div id="nav-top"><ul>
-<li><a class="n_home" href="/" title="Home">Home</a></li>
-<li><a class="n_about" href="/about" title="About">About</a></li>
-<li><a class="n_courses" href="{% url tiger.views.course_list %}" title="Courses">Courses</a></li>
-{% if user.is_authenticated %}
-<li><a class="n_profile" href="{% url profiles.views.profile_detail user.username %}" title="Profile">Profile</a></li>
-<li><a class="n_admin" href="/admin/" title="Admin">Admin</a></li>
-<li><a class="n_admin-docs" href="/admin/doc/" title="Docs">Docs</a></li>
-{% else %}
-<li><a class="n_login" href="/login" title="Login">Login</a></li>
-{% endif %}
-{% block nav-top %}
-{% endblock nav-top %}
+{% block header_content %}{% include 'shared/header.html' %}{% endblock header_content %}
 
-</ul>
 </div>
-</div>
+
 <!-- END header -->
 {% endblock header %}
+
+
 
 # This file should contain any override to the layout_base.html

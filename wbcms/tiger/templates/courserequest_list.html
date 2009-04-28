@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 {% if object_list %}
-<table>
+<table class="module">
 
-{% for object in object_list %}
-<tr><td><a href="{% url course_request_detail object.id %}"> {{ object }}</a></td></tr>
-{% endfor %}
+{% with object_list as course_requests %}
+{% include "_courserequest-list.html" %}
+{% endwith %}
 </table>
-{% else %}
-<p>No course requests [listed, pending, ...]</p>
 {% endif %}
-
-
 {% endblock content %}
