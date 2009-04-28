@@ -1,6 +1,7 @@
 /* based on the excellent blueprint typography.css */
 /* body font-size was originally 75% */
-body {font-size:small;color:#323232;background: #fff url('images_red/n4.gif') repeat-x;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;}
+html { background: #ddd; }
+body {font-size:small;color:#323232;background: #ddd !important;font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#121212; }
 h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
 h2 {font-size:2em;margin-bottom:0.75em;}
@@ -10,8 +11,8 @@ h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
 h6 {font-size:1em;font-weight:bold;}
 h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}
 p {margin:0 0 1.5em;}
-p img {float:left;margin:1.5em 1.5em 1.5em 0;padding:0;}
-p img.right {float:right;margin:1.5em 0 1.5em 1.5em;}
+/* p img {margin:1.5em 1.5em 1.5em 0;padding:0;}
+p img.right {float:right;margin:1.5em 0 1.5em 1.5em;} */
 a:focus, a:hover {color:#0000BC;text-decoration:underline;}
 a:active { outline: 0 !important; }
 a {color:#009;}
@@ -33,9 +34,9 @@ dl {margin:0 0 1.5em 0;}
 dl dt {font-weight:bold;}
 dd {margin-left:1.5em;}
 table {margin-bottom:1.4em;width:100%;}
-th {font-weight:bold;background:#C3D9FF;}
+th {font-weight:bold;}
 th, td {padding:4px 10px 4px 5px;}
-tr.even td {background:#E5ECF9;}
+tr.even td {background:#EDF3FE;}
 tfoot {font-style:italic;}
 caption {background:#eee;}
 .small {font-size:.8em;margin-bottom:1.875em;line-height:1.875em;}
@@ -64,13 +65,14 @@ h1 { font-size: 2em; }
 h2 { font-size: 1.6em; }
 h3 { font-size: 1.2em; }
 
+/*
 input, textarea
 {
 border: 2px solid #ccc;
 padding: 0.3em;
 font-size: 1.2em;
 background: #f0f0f0;
-}
+}*/
 
 input[type=text]:focus, input[type=password]:focus, textarea:focus
 {
@@ -119,9 +121,7 @@ padding-top: 1.0em;
 
 #logo h1
 {
-display: inline;
-color: #323232;
-font-size: 2.6em;
+font-size: 2.9em;
 font-weight: bold;
 }
 
@@ -132,15 +132,15 @@ margin-left: 0.7em;
 }
 
 #logo h1 a, #logo h1 a:visited {
-    color: #000;
+    color: #FFF;
 }
 
 #logo h1 a:hover {
-    color: #0000C7;
+    color: #F7F7F7;
 }
 
 #logo h1 a span, #logo h1 a:visited span {
-    color: #C700F;
+    color: #C7000F;
 }
 
 #logo h1 a:hover span {
@@ -275,12 +275,14 @@ color: #fff;
 }
 
 
+#bd { background: #f7f7f7; padding: 2em; }
+
 /* errors */
 ul.errorlist li, p.error { border: 1px solid #777; background: #fcc; color: #900; padding: 5px; }
 ul.errorlist { padding-left: 0; padding-right: 0; margin: 0; }
 
 /* probable yui killers */
-#bd, .yui-g, .yui-gb, .yui-gc, .yui-gd, .yui-ge, .yui-gf {
+/* #bd, .yui-g, .yui-gb, .yui-gc, .yui-gd, .yui-ge, .yui-gf {
 margin:0 auto;
 width:920px;
 }
@@ -289,7 +291,7 @@ width:920px;
 .yui-t1 .yui-b {float:left; width:6.3077em;}
 
 
-
+*/
 
 
 /* sdfsdf */
@@ -312,7 +314,8 @@ background:#717478  !important;
 color: #f0f0f0 !important;
 overflow:hidden !important;
 border-bottom: 1px solid #ddd !important; 
-padding-top:10px !important;
+padding: 10px 1em;
+width: inherit !important; }
 }
 
 div.breadcrumbs {
@@ -331,6 +334,10 @@ text-align:right !important;
 top:0 !important;
 z-index:10 !important;
 }
+
+.module { background: #f7f7f7 !important; }
+.module table { margin-bottom: 0; }
+
 
 .module h2, .module caption, .inline-group h2 {
 background:#CCCCCC none repeat scroll 0 0 !important;
@@ -363,5 +370,27 @@ border-right:0 !important;
 
 a.section:link, a.section:visited,.module h2, .module caption, .inline-group h2  { color: #555 !important; }
 
+#nav-main {  }
+#nav-main ul li { list-style; inside; list-style-type: none; }
+
+#nav-user { margin-right: 1em }
+#nav-user a { font-weight: bold; }
 
 
+.profile_full h1 { padding-left: 5px; }
+.profile_full th { padding-lefT: 5px; }
+
+table.contact_full { width: 600px; }
+
+div.course { padding: 2em; margin-bottom: 1em }
+
+
+#messages p {
+padding: 8px;
+width:280px;
+margin: 0 auto;
+text-align: center;
+margin:0 auto 8px;
+}
+
+#messages p.mS { background: #99CC99; }

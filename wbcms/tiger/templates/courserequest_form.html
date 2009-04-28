@@ -1,15 +1,28 @@
 {% extends "base.html" %}
-{% block content %}
-<h1>Create Course Request</h1>
+{% load adminmedia %}
 
-<form id="course_request" method="POST">
-<fieldset class="module aligned">
-{% include "form_snippet.html" %}
-</fieldset>
-<div class="submit-row">
-<input class="default" type="submit" name="_save" value="Submit"/>
-</div>
-</form>
+{% block css.custom %}
+<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css"/>
+<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/base.css"/>
+<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/global.css"/>
+<link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/widgets.css"/>
+{% endblock %}
+{% block js.custom %}
+
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
+<script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
+
+{{ form.media }}
+
+{% endblock %}
+
+{% block content %}
+<h1>Course Request: {{ course.name }}</h1>
+
+{% with course as object %}{% include "_course-full.html" %}{% endwith %}
+
+{% include "_courserequest-form.html" %}
 
 
 <form id="also_course_requst" method="POST">

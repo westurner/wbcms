@@ -19,7 +19,7 @@ th { text-align: right; }
 #user-tools { right:auto; left:0; text-align:left; }
 div.breadcrumbs { text-align:right; }
 #content-main { float:right;}
-#content-related { float:left; margin-left:-19em; margin-right:auto;}
+/* #content-related { float:left; margin-left:-19em; margin-right:auto;} */
 .colMS { margin-left:20em !important; margin-right:10px !important;}
 
 /* dashboard styles */

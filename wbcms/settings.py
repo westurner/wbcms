@@ -55,12 +55,12 @@ MEDIA_ROOT = _PATH('media')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = _URL('media')
+MEDIA_URL = "http://media.ts.wrd.nu/media/"
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/admin/'
+ADMIN_MEDIA_PREFIX = 'http://media.ts.wrd.nu/media/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '7%lj)m#%(d8=2g&vcw4k1w@a4pgp%w!$eep4$bsa20+5h02d-s'
@@ -80,13 +80,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'pagination.middleware.PaginationMiddleware'
 )
-
-#Debug toolbar
-if DEBUG:
-    INTERNAL_IPS = ('127.0.0.1',)
 
 ROOT_URLCONF = '.'.join([PROJECT_NAME, 'urls'])
 
@@ -103,7 +98,6 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.flatpages',
     'tiger',
@@ -111,6 +105,7 @@ INSTALLED_APPS = (
     'registration',
     'profiles',
     'utils',
+    'django.contrib.admin',
 )
 
 AUTH_PROFILE_MODULE = 'tiger.Person'
@@ -118,6 +113,8 @@ LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 
 ACCOUNT_ACTIVATION_DAYS = 3
+
+MEDIA_URL="http://media.ts.wrd.nu/media/"
 
 try:
     from local_settings import *

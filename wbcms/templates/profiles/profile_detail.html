@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}
-{{ object.name }} - Profile
+{{ profile.full_name }} - My Account
 {% endblock title %}
 
 {% block content %}
@@ -8,19 +8,27 @@
     <h1><a href="{{ object.get_absolute_url }}" title="{{ object.full_name }}"> {{ profile.full_name }}</a></h1>
 
 <table class="contact_full">
-<tr><td>{{ profile.addr_1 }}</td></tr>
-<tr><td>{{ profile.addr_2 }}</td></td>
-<tr><td>{{ profile.city }}</td></tr>
-<tr><td>{{ profile.state }}</td></tr>
-<tr><td>{{ profile.phone }}</td></tr>
-<tr><td>{{ profile.email }}</td></tr>
+<tr><th>Address Line 1</th><td>{{ profile.addr_1 }}</td></tr>
+<tr><th>Address Line 2</th><td>{{ profile.addr_2 }}</td></td>
+<tr><th>City</th><td>{{ profile.city }}</td></tr>
+<tr><th>State</th><td>{{ profile.state }}</td></tr>
+<tr><th>Phone Number</th><td>{{ profile.phone }}</td></tr>
+<tr><th>Email Address</th><td>{{ profile.email }}</td></tr>
 
 </table>
+
+
+
+<ul>
+<li><a href="{% url profiles_edit_profile %}">Update my information</a></li>
+<li><a href="{% url auth_password_change %}">Change my password</a></li>
+</div>
+
+<div class="course_requests">
 
 </div>
 
 
-<a href="{% url profiles_edit_profile %}">Update my information</a>
 
 
 {% endblock content %}

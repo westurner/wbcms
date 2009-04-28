@@ -8,46 +8,74 @@ class PhoneInline(admin.TabularInline):
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('last_name','first_name','company')
+    list_display = ('last_name','first_name','company','email', 'modified')
     inlines = [PhoneInline]
+    
+    list_filter = ('company',)
 
     verbose_name_plural = "People"
 
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('last_name','first_name','company','email')
+    
+    list_filter = ('company',)
+    
     inlines = [PhoneInline]
 
 
 class InstructorAvailabilityInline(admin.TabularInline):
     model = InstructorAvailability
 
+    list_filter = ('instructor',)
+    date_hierarchy = 'availability_start'
+
     verbose_name = "Availability"
     verbose_name_plural = "Availability"
 
 
 class InstructorAdmin(admin.ModelAdmin):
-    list_display = ('last_name','first_name','company','email')
+    list_display = ('last_name','first_name','email','modified')
     inlines = [PhoneInline, InstructorAvailabilityInline ]
 
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('name','subject','cost','min_required_students')
+    list_filter = ('subject',)
     prepopulated_fields = {'slug': ('name',) }
 
 
 class ClientAvailabilityInline(admin.TabularInline):
     model = ClientAvailability
 
+    list_filter = ('instructor',)
+    date_hierarchy = 'availability_start'
+    
 
 class CourseRequestAdmin(admin.ModelAdmin):
-    list_display = ('person', )
+    list_display = ('person','course','status','created','modified' )
+
+    list_filter = ('status',)
+    radio_fields = {'status': admin.VERTICAL}
+
+    fieldsets = (
+        (None, {
+            'fields': ('course','person','availability_start','availability_end')}),
+        ('Request Scheduling', {
+            'fields': ('status', 'session') }),
+    )
 
     inlines = [ ClientAvailabilityInline ]
 
 
 class CourseSessionAdmin(admin.ModelAdmin):
-    list_display = ['course','instructor','_number_of_students','value']
+    list_display = ['course','instructor','start','_number_of_students','value']
+    
+    list_filter = ('instructor',)
+    
+    date_hierarchy = 'start'
+    
+    list_select_related = True
     
     filter_horizontal = ('students',)
 
