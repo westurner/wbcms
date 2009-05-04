@@ -1,13 +1,14 @@
 {% if course_requests %}
 <thead>
-<tr><th>Course</th><th>Original Request</th><th>Status</th></tr>
+<tr><th>Course</th><th># Students</th><th>Original Request</th><th>Status</th></tr>
 </thead>
 <tbody>
 {% for object in course_requests %}
-{# course, date, status #}
+{# course, num, date, status #}
 <tr><td><a href="{% url course_request_detail object.id %}"> {{ object.course }}</a></td>
+<td>{{ object.number_of_students }}</td>
 <td>{{ object.created }}</td>
-<td>{{ object.status }}</td>
+<td>{{ object.get_status_display }}</td>
 </tr>
 {% endfor %}
 </tbody>

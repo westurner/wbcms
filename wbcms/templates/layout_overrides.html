@@ -24,13 +24,13 @@
     {% block js.shared %}{% endblock js.shared %}
     {% block js.custom %}{% endblock js.custom %}
     {% endblock js%}
+    {% block extrahead %}{% endblock extrahead %}
   </head>
 {% endblock head %}
 
 {% block header %}
 <!-- BEGIN header -->
 <div id="header">
-
 {% block nav-user %}
 <div id="nav-user" style="text-align:right;">
 {% if user.is_authenticated %}welcome, {{ user.username }} <a href="/logout">logout</a>{% endif %}
@@ -41,17 +41,11 @@
 {% endif %}
 {% endif %}
 </div>
-
-
 {% endblock nav-user %}
 
 {% block header_content %}{% include 'shared/header.html' %}{% endblock header_content %}
-
 </div>
-
 <!-- END header -->
 {% endblock header %}
-
-
 
 # This file should contain any override to the layout_base.html

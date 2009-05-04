@@ -42,7 +42,7 @@ caption {background:#eee;}
 .small {font-size:.8em;margin-bottom:1.875em;line-height:1.875em;}
 .large {font-size:1.2em;line-height:2.5em;margin-bottom:1.25em;}
 .hide {display:none;}
-.quiet {color:#666;}
+.quiet {color:#666; font-size:0.9em;}
 .loud {color:#000;}
 .highlight {background:#ff0;}
 .added {background:#060;color:#fff;}
@@ -93,7 +93,7 @@ padding-right: 1.5em;
 
 input[type=submit]:hover, input[type=reset]:hover
 {
-background: #aaa;
+/*background: #aaa;*/
 }
 
 p
@@ -108,7 +108,8 @@ line-height: 1.2em;
 }
 
 #doc3 {
-margin: auto 30px;
+margin: 0 auto;
+width: 960px;
 }
 
 /* logo */
@@ -278,8 +279,25 @@ color: #fff;
 #bd { background: #f7f7f7; padding: 2em; }
 
 /* errors */
-ul.errorlist li, p.error { border: 1px solid #777; background: #fcc; color: #900; padding: 5px; }
+ul.errorlist li, p.error {  background: #fee; color: #900; padding: 5px; border:1px solid #CCCCCC;}
 ul.errorlist { padding-left: 0; padding-right: 0; margin: 0; }
+
+ul.object-tools li,
+ul.object-tools li a,
+ul.object-tools li a:hover,
+ul.object-tools li:hover,
+ul.object-tools a:hover,
+ul.object-tools a:link,
+ul.object-tools a:visited,
+ul.object-tools a.addlink:hover { background: none; color: inherit; }
+
+.object-tools { font-size: 1em; }
+
+ul.object-tools li {background: transparent url(../admin/img/admin/nav-bg.gif); font-size:1em; border:1px solid #ccc;}
+
+
+.object-tools a.addlink,
+.object-tools a.addlink:hover { padding-left: 12px; background: transparent url(../admin/img/admin/icon_addlink.gif); }
 
 /* probable yui killers */
 /* #bd, .yui-g, .yui-gb, .yui-gc, .yui-gd, .yui-ge, .yui-gf {
@@ -335,12 +353,13 @@ top:0 !important;
 z-index:10 !important;
 }
 
-.module { background: #f7f7f7 !important; }
+.module { background: #f7f7f7 !important; border: 0; }
 .module table { margin-bottom: 0; }
 
 
 .module h2, .module caption, .inline-group h2 {
-background:#CCCCCC none repeat scroll 0 0 !important;
+background:transparent;
+border-bottom:2px solid #CCCCCC;
 }
 
 /* WBCMS */
@@ -382,15 +401,63 @@ a.section:link, a.section:visited,.module h2, .module caption, .inline-group h2 
 
 table.contact_full { width: 600px; }
 
-div.course { padding: 2em; margin-bottom: 1em }
+ div.course_sm { padding: 2em 0; margin-bottom: 1em }
 
 
 #messages p {
 padding: 8px;
-width:280px;
+/*width:280px;*/
 margin: 0 auto;
 text-align: center;
 margin:0 auto 8px;
 }
 
-#messages p.mS { background: #99CC99; }
+#messages p.mS { background: #AADDAA; border: 1px solid #00CC00; }
+
+#content { background: #f7f7f7 !important; padding:0 15px 10px !important; border: 1px solid #ccc; }
+#content h1 { border-bottom: 3px solid #ccc; padding-bottom: 0.4em;  margin-top:1em; }
+#content-related { border: 1px solid #ccc; background: #f7f7f7; }
+#content-related .module h2 { background-color: white; border-bottom: 0; }
+
+#content-cms div.form-row, #publishinginfo div.form-row { background: #e7e7e7; padding: 2px 4px; }
+
+#header { padding: 0 !important; }
+#logo { padding: 1em 1em 0 !important; }
+#logo h1 { font-size: 2em !important; }
+#logo h1 a:hover { color: #dddddd !important; text-decoration: none !important; }
+div.breadcrumbs { font-size: 1em !important; }
+#nav-user { float: right !important; }
+.module h2, .module caption, .inline-group h2 { font-size: 1.7em !important; font-weight: normal !important; }
+
+.colSM #content-related { margin-left: -20em !important; }
+
+#content-related .module ul li { list-style-type: none !important;
+font-size: 1em !important; }
+
+#content-related { margin-right: -20em !important; }
+
+#content-related .module ul, #content-related .module ol { margin-left: 0.2em !important; }
+
+#changelist { border:1px solid #CCCCCC; }
+
+.inline-group { border: 0; }
+
+
+#page-contents { border: 1px solid #ccc; }
+div.submit-row { background: none; border: 0; max-width: 800px;}
+
+#course_request { margin-top: 3em; }
+#course_request .form-row span { float: right; margin-right:1.2em; }
+#course_request #id_number_of_students { width: 3em; }
+
+#admin_tasks  { background: #e7e7e7; border: 1px solid #ccc; margin: 0; padding: 1em;  }
+#admin_tasks ul {margin-left: 0 !important; padding: 0;}
+#admin_tasks ul li { font-size: 1.0em; list-style-type: none; }
+div.breadcrumbs { background: transparent; border-bottom: 0; }
+form .aligned p,
+form .aligned ul {margin-left: 8em;}
+form .aligned p.help { padding: 0; margin-left: 9em; }
+.help, p.help { background: #e7e7f7 !important; font-size: 1.2em !important; }
+.form-row { padding: 0; border-bottom: 1px solid #ccc;  }
+
+.frm_box { background: #e7e7e7; padding: 0 1em; }

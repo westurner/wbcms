@@ -1,23 +1,16 @@
 # Create your views here.
 from django.core.urlresolvers import reverse
-
 from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.create_update import create_object, update_object, delete_object, lookup_object
-from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import redirect_to
-from django.template import RequestContext
-from django.forms.models import inlineformset_factory
-from django.template import loader
+from django.contrib.auth.decorators import login_required
+from django.template import RequestContext, loader
 from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.utils.translation import ugettext as _
 
 from tiger.forms import *
 from tiger.models import *
-
 from profiles.views import create_profile
-
-from django.utils.translation import ugettext as _
-
-from functools import partial
 
 # Courses
 
@@ -25,8 +18,10 @@ def course_list(request):
     return object_list(request, Course.objects.filter(status__gt=0))
 
 def course_detail(request, id=None, slug=None):
+    """
+    Return a detail page for a course
+    """
     queryset=Course.objects.filter(status__gt=0)
-
     return object_detail(request, queryset=queryset, slug_field='slug', slug=slug)
 
 # Course Requests

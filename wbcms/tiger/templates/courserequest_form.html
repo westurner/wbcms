@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load adminmedia %}
-
 {% block css.custom %}
 <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css"/>
 <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/base.css"/>
@@ -8,50 +7,21 @@
 <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/widgets.css"/>
 {% endblock %}
 {% block js.custom %}
-
 <script type="text/javascript" src="/admin/jsi18n/"></script>
 <script type="text/javascript" src="{% admin_media_prefix %}js/core.js"></script>
 <script type="text/javascript" src="{% admin_media_prefix %}js/admin/RelatedObjectLookups.js"></script>
-
 {{ form.media }}
-
 {% endblock %}
 
 {% block content %}
-<h1>Course Request: {{ course.name }}</h1>
-
-{% with course as object %}{% include "_course-full.html" %}{% endwith %}
-
-{% include "_courserequest-form.html" %}
-
-
-<form id="also_course_requst" method="POST">
-{{ formset.non_form_errors.as_ul }}
-<table id="formset" class="form">
-{% for form in formset.forms %}
-  {% if forloop.first %}
-  <thead><tr>
-    {% for field in form.visible_fields %}
-    <th>{{ field.label|capfirst }}</th>
-    {% endfor %}
-  </tr></thead>
-  {% endif %}
-  <tr class="{% cycle row1,row2 %}">
-  {% for field in form.visible_fields %}
-    <td>
-    {# Include the hidden fields in the form #}
-    {% if forloop.first %}
-      {% for hidden in form.hidden_fields %}
-      {{ hidden }}
-      {% endfor %}
-    {% endif %}
-      {{ field.errors.as_ul }}
-      {{ field }}
-    </td>
-  {% endfor %}
-  </tr>
-{% endfor %}
-</table>
-</form>
-
+<div class="yui-gc">
+    <div class="yui-u first">
+        {% with course as object %}
+        {% include "_course-full.html" %}
+        {% endwith %}
+    </div>
+    <div class="yui-u">
+        {% include "_courserequest-form.html" %}
+    </div>
+</div>
 {% endblock content %}

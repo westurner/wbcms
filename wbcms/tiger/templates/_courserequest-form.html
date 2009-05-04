@@ -1,6 +1,6 @@
-<form id="course_request" method="POST" action="{% url course_request_create course.slug %}>
+<form id="course_request" method="POST" action="{% url course_request_create course.slug %}">
 <fieldset class="module aligned">
-
+    <h3><a href="{{ course.get_absolute_url }}" >Request this course</a></h3>
 {% include "form_snippet.html" %}
 </fieldset>
 <div class="submit-row">
