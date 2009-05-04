@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^admin/doc/gen/', include('genidef1x.urls')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/(.*)', admin.site.root),
-    (r'^tinymce/', include('tinymce.urls')),
+    #(r'^tinymce/', include('tinymce.urls')),
     (r'', include('wbcms.tiger.urls')),
     (r'', include('cms.urls')),
 )
