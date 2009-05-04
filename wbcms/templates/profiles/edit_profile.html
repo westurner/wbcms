@@ -2,12 +2,22 @@
 {% block title %}Account Information{% endblock title %}
 {% block devel %} {% endblock devel %}
 {% block content %}
-<form id="course_request" method="POST">
-<fieldset class="module aligned">
-{% include "form_snippet.html" %}
-</fieldset>
-<div class="submit-row">
-<input class="default" type="submit" name="_save" value="Submit"/>
+<h1>Update your account information</h1>
+<div class="yui-g">
+    <div class="yui-u first">
+        <p>Also..</p>
+    </div>
+    <div class="yui-u">
+        <form id="course_request" method="POST">
+        <fieldset class="module aligned">
+        {% include "form_snippet.html" %}
+        </fieldset>
+        <div class="submit-row">
+        <input class="default" type="submit" name="_save" value="Submit"/>
+        </div>
+        </form>
+    </div>
+
 </div>
-</form>
+
 {% endblock content %}

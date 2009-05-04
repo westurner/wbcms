@@ -14,13 +14,13 @@ urlpatterns = patterns('',
         url(r'courses/$',
             course_list,
             name='course_list'),
-        url(r'courses/(?P<slug>[\w-]+)$',
-            course_detail,
-            name='course_detail'),
+        #url(r'courses/(?P<slug>[\w-]+)$',
+        #    course_request_create,
+        #    name='course_detail'),
             
            
         # Course Requests
-        url(r'courses/(?P<slug>[\w-]+)/request',
+        url(r'courses/(?P<slug>[\w-]+)',
             course_request_create,
             name='course_request_create'),
         url(r'requests/$',
