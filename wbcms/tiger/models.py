@@ -107,9 +107,9 @@ class TimeWindow(TimeStampedModel):
     """
     start = models.DateTimeField(verbose_name="Start")
     end = models.DateTimeField(verbose_name="End")
-    scheduled = models.BooleanField(verbose_name="Open",
-        help_text="Whether the availability window has been scheduled",
-        default=False)
+    #scheduled = models.BooleanField(verbose_name="status",
+    #    help_text="Whether the availability window has been scheduled",
+    #    default=False)
 
     def __unicode__(self):
         return "%s -> %s" % (self.start.strftime("%D %l:%M %p"),
@@ -131,16 +131,16 @@ class InstructorAvailability(TimeWindow):
         verbose_name_plural = verbose_name = "Instructor Availability"
 
 
-class ClientAvailability(TimeWindow):
-    """
-    When a ``Person`` is available to take a course
-    """
-    person = models.ForeignKey(Person, verbose_name="Client")
-    course_request = models.ForeignKey('CourseRequest',
-        verbose_name="Course Request")
-
-    class Meta:
-        verbose_name_plural = verbose_name = "Client Availability"
+#class ClientAvailability(TimeWindow):
+#    """
+#    When a ``Person`` is available to take a course
+#    """
+#    person = models.ForeignKey(Person, verbose_name="Client")
+#    course_request = models.ForeignKey('CourseRequest',
+#        verbose_name="Course Request")
+#
+#    class Meta:
+#        verbose_name_plural = verbose_name = "Client Availability"
 
 
 COURSE_STATUSES = (
@@ -153,10 +153,15 @@ class Course(TimeStampedModel):
     """
     A ``course`` list entry
     """
-    name = models.CharField(verbose_name="Course Name", max_length=256)
+    name = models.CharField(verbose_name="Course Name", max_length=256,
+    help_text="The course title")
     slug = models.SlugField()
-    subject = models.CharField(verbose_name="Course Subject", max_length=128)
-    description = models.TextField(verbose_name="Course Description")
+    subject = models.CharField(verbose_name="Course Subject", max_length=128,
+    help_text="Course Subject. ex: SOA & BPM")
+    description = models.TextField(verbose_name="Course Description",
+    help_text="Course description")
+    duration = models.CharField(verbose_name="Course Duration", max_length=64,
+    help_text="Course Duration")
     cost=models.DecimalField(verbose_name="Course Cost",
         help_text="Cost per person",
         decimal_places=2,
@@ -179,7 +184,7 @@ class Course(TimeStampedModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('tiger.views.course_detail',[self.slug])
+        return ('tiger.views.course_request_create',[self.slug])
 
 
 COURSE_REQUEST_STATUSES = (
@@ -192,19 +197,23 @@ COURSE_REQUEST_STATUSES = (
 )
 class CourseRequest(TimeStampedModel):
     """
-    A request made by (or on behalf of) a ``client``, who would like to
-    schedule a ``Course``s during one or more periods of ``Availability``.
+    A request made by (or on behalf of) a ``Client``, who would like to
+    schedule a ``CourseSession``.
     """
     id = UUIDField(primary_key=True)
-    person = models.ForeignKey(Person, verbose_name="Client")
+    person = models.ForeignKey(Person, verbose_name="Client",
+        help_text="Client that course request was filed by or on behalf of")
     course = models.ForeignKey(Course, verbose_name="Requested Course")
     number_of_students = models.IntegerField(verbose_name="Number of Students")
     availability_start = models.DateTimeField(verbose_name="Start",blank=True,
-        null=True)
+        null=True,
+        help_text="Availability start date (optional)")
     availability_end = models.DateTimeField(verbose_name="End",blank=True,
-        null=True)
+        null=True,
+        help_text="Availability end date (optional)")
     status = models.IntegerField(verbose_name="Request Status",
-        choices=COURSE_REQUEST_STATUSES, default=-1)
+        choices=COURSE_REQUEST_STATUSES, default=-1,
+        help_text="Course Request Status")
     session = models.ForeignKey('CourseSession',
         verbose_name="Course Session",
         related_name="course_request",
@@ -216,7 +225,13 @@ class CourseRequest(TimeStampedModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('tiger.views.course_request_detail',[self.id])
+        return ('tiger.views.course_request_create',[self.id])
+
+    def get_potential_revenue(self):
+        return '$%s' % (self.course.cost*self.number_of_students)
+
+    def potential_revenue(self):
+        return '%s (%s @ $%s)' % (self.get_potential_revenue(),self.number_of_students, self.course.cost)
 
     class Meta:
         verbose_name = "Course Request"
@@ -245,7 +260,7 @@ class CourseSession(TimeWindow):
     def __str__(self):
         return "%s (%s)" % (course.name, instructor.full_name())
 
-    def value(self):
+    def revenue(self):
         return locale.currency(self.course.cost*self._number_of_students(),
             grouping=True)
 

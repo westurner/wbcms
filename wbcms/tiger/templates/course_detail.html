@@ -4,17 +4,16 @@
 {% endblock title %}
 
 {% block content %}
-<div class="course_full">
-    <h1><a href="{% url tiger.views.course_detail object.slug %}" title="{{ object.name }}"> {{ object.name }}</a></h1>
-    <h2> {{ object.subject }} </h2>
-    <p> {{ object.description }} </p>
-    <dl>
-        <dt>Minimum Number of Students</dt>
-        <dd>{{ object.min_required_students }}<dd>
-        <dt>Cost Per Student</dt>
-        <dd>{{ object.cost }}</dd>
-    </dl>
-    <a class="button button_request" href="{% url tiger.views.course_request_create object.slug %}">Request this course</a>
+<div class="yui-gc">
+    <div class="yui-u first">
+        {% include "_course-full.html" %}
+    </div>
+    <div class="yui-u">
+        {% with object as course %}
+        {% include "_courserequest-form.html" %}
+        {% endwith %}
+        <a class="button button_request" href="{% url tiger.views.course_request_create object.slug %}">Request this course</a>
+    </div>
 </div>
 
 

@@ -14,13 +14,8 @@
 {% endif %}
 
 <form method="post" action="?next={{ next|default:"/" }}">
-<dl>
-<dt><label for="id_username">Username:</label>{% if form.username.errors %} <span class="error">{{ form.username.errors|join:", " }}</span>{% endif %}</dt>
-<dd>{{ form.username }}</dd>
-<dt><label for="id_password">Password:</label>{% if form.password.errors %} <span class="error">{{ form.password.errors|join:", " }}</span>{% endif %}</dt>
-<dd>{{ form.password }}</dd>
-<dt><input type="submit" value="Log in" /></dt>
-</dl>
+{% include "form_snippet.html" %}
+<input type="submit" value="Log in" />
 </form>
 </div>
 
