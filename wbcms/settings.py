@@ -76,9 +76,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.csrf.middleware.CsrfMiddleware',
+    #'django.contrib.csrf.middleware.CsrfMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+    'cms.middleware.util.XHTMLToHTMLMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     #'pagination.middleware.PaginationMiddleware'
 )
@@ -101,6 +104,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.flatpages',
     'tiger',
+    'cms',
     'django_extensions',
     'registration',
     'profiles',

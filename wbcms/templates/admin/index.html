@@ -10,6 +10,26 @@
 {% block breadcrumbs %}{% endblock %}
 
 {% block content %}
+
+<div id="admin_tasks" style="width: 16em; margin-right: -20em; float:right; margin-bottom: 1em;">
+    <ul class="user_tasks">
+        <li><a href="/admin/tiger/courserequest/add">Enter a Course Request</a></li>
+        <li><a href="/admin/tiger/coursesession/add">Schedule a Course Session</a></li>
+    </ul>
+    <ul class="user_tasks">
+        <li><a href="/admin/tiger/course/add/">Add a Course</a></li>
+        <li><a href="/admin/tiger/instructor/add">Add an Instructor</a></li>
+        <li><a href="/admin/tiger/student/add">Add a Student</a></li>
+        <li><a href="/admin/auth/user/add">Add a User</a></li>
+        <li><a href="/admin/cms/page/">Manage pages</a></li>
+    </ul>
+    <ul class="user_tasks">
+        <li><a href="/users/password/change/">Change my password</a></li>
+        <li><a href="accounts/edit/">Update my account contact information</a></li>
+    </ul>
+
+</div>
+
 <div id="content-main" > 
 
 
@@ -27,13 +47,13 @@
             {% endif %}
 
             {% if model.perms.add %}
-                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Enter' %}</a></td>
             {% else %}
                 <td>&nbsp;</td>
             {% endif %}
 
             {% if model.perms.change %}
-                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Update' %}</a></td>
             {% else %}
                 <td>&nbsp;</td>
             {% endif %}
@@ -50,7 +70,7 @@
 {% endblock %}
 
 {% block sidebar %}
-<div id="content-related" >
+<div id="content-related" style="clear:right" >
     <div class="module" id="recent-actions-module">
         <h2>{% trans 'Recent Actions' %}</h2>
         <h3>{% trans 'My Actions' %}</h3>

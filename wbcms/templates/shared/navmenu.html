@@ -1,8 +1,10 @@
 <div id="nav-main">
 <ul>
 <li><a class="n_home" href="/" title="Home">Home</a></li>
-<li><a class="n_about" href="/about" title="About">About</a></li>
-<li><a class="n_courses" href="{% url tiger.views.course_list %}" title="Courses">Courses</a></li>
+<li><a class="n_services" href="/services" title="Services">Services</a></li>
+<li><a class="n_training" href="{% url tiger.views.course_list %}" title="Training">Training</a></li>
+<li><a class="n_training" href="/contact" title="Contact">Contact</a></li>
+
 
 {% if user.is_staff %}
 <li><a class="n_admin" href="/admin/" title="Admin">Admin</a></li>
