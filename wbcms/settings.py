@@ -112,6 +112,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 )
 
+CMS_DEFAULT_TEMPLATE = 'base_cms.html'
+CMS_LANGUAGE_REDIRECT = False
+CMS_USE_TINYMCE = False
+
+
 AUTH_PROFILE_MODULE = 'tiger.Person'
 LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
@@ -119,6 +124,14 @@ LOGOUT_URL = '/logout'
 ACCOUNT_ACTIVATION_DAYS = 3
 
 MEDIA_URL="http://media.ts.wrd.nu/media/"
+
+
+INTERNAL_IPS = ('127.0.0.1',)
+LANGUAGES = (
+    ('en', 'English'),
+)
+
+
 
 try:
     from local_settings import *
