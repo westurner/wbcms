@@ -3,25 +3,22 @@ from wbcms.tiger.models import *
 
 class PhoneInline(admin.TabularInline):
     model = Phone
-
     verbose_name = "Phone Number"
 
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('last_name','first_name','company','email', 'modified')
     inlines = [PhoneInline]
-    
     list_filter = ('company',)
-
     verbose_name_plural = "People"
+    save_on_top = True
 
 
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('last_name','first_name','company','email')
-    
     list_filter = ('company',)
-    
     inlines = [PhoneInline]
+    save_on_top = True
 
 
 class InstructorAvailabilityInline(admin.TabularInline):
@@ -37,12 +34,14 @@ class InstructorAvailabilityInline(admin.TabularInline):
 class InstructorAdmin(admin.ModelAdmin):
     list_display = ('last_name','first_name','email','modified')
     inlines = [PhoneInline, InstructorAvailabilityInline ]
+    save_on_top = True
 
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('name','subject','duration','cost','min_required_students')
     list_filter = ('subject',)
     prepopulated_fields = {'slug': ('name',) }
+    save_on_top = True
 
 
 #class ClientAvailabilityInline(admin.TabularInline):
@@ -64,6 +63,7 @@ class CourseRequestAdmin(admin.ModelAdmin):
         ('Request Scheduling', {
             'fields': ('status', 'session') }),
     )
+    save_on_top = True
 
     #inlines = [ ClientAvailabilityInline ]
 
@@ -74,7 +74,7 @@ class CourseSessionAdmin(admin.ModelAdmin):
     date_hierarchy = 'start'
     list_select_related = True
     filter_horizontal = ('students',)
-
+    save_on_top = True
 
 admin.site.register(Company)
 admin.site.register(Person,PersonAdmin)
