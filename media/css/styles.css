@@ -290,6 +290,18 @@ ul.object-tools a:hover,
 ul.object-tools a:link,
 ul.object-tools a:visited,
 ul.object-tools a.addlink:hover { background: none; color: inherit; }
+/* OBJECT TOOLS */
+.object-tools { font-size:10px; font-weight:bold; font-family:Arial,Helvetica,sans-serif; padding-left:0; float:right; position:relative; margin-top:-2.4em; margin-bottom:-2em; }
+.form-row .object-tools { margin-top:5px; margin-bottom:5px; float:none; height:2em; padding-left:3.5em; }
+.object-tools li { display:block; float:left; background:transparent; padding:0 0 0 8px; margin-left:2px; height:16px; }
+.object-tools li:hover { background:transparent;}
+.object-tools a:link, .object-tools a:visited { display:block; float:left; color:white; padding:.1em 14px .1em 8px; height:14px; background:transparent; }
+.object-tools a:hover, .object-tools li:hover a { background:transparent; }
+.object-tools a.viewsitelink, .object-tools a.golink { background:transparent; padding-right:28px; }
+.object-tools a.viewsitelink:hover, .object-tools a.golink:hover { background:transparent; }
+.object-tools a.addlink { background:transparent; padding-right:28px; }
+.object-tools a.addlink:hover { background:transparent; }
+
 
 .object-tools { font-size: 1em; }
 
@@ -399,9 +411,9 @@ a.section:link, a.section:visited,.module h2, .module caption, .inline-group h2 
 .profile_full h1 { padding-left: 5px; }
 .profile_full th { padding-lefT: 5px; }
 
-table.contact_full { width: 600px; }
+/* table.contact_full { width: 600px; } */
 
- div.course_sm { padding: 2em 0; margin-bottom: 1em }
+/*  div.course_sm { padding: 2em 0; margin-bottom: 1em } */
 
 
 #messages p {
@@ -437,6 +449,7 @@ font-size: 1em !important; }
 #content-related { margin-right: -20em !important; }
 
 #content-related .module ul, #content-related .module ol { margin-left: 0.2em !important; }
+#content-main .form-row { background: #e7e7e7; }
 
 #changelist { border:1px solid #CCCCCC; }
 
@@ -461,3 +474,13 @@ form .aligned p.help { padding: 0; margin-left: 9em; }
 .form-row { padding: 0; border-bottom: 1px solid #ccc;  }
 
 .frm_box { background: #e7e7e7; padding: 0 1em; }
+
+.course_list li { list-style-type: none; }
+.course_list li ul { margin: 0; }
+.course_list h2 { border-bottom: 2px solid #ddd; margin-top: 2em; }
+.course_sm { border-bottom: 1px solid #ddd; padding-left: 1px;}
+
+.legend { background: #dfdfdf; border: 1px solid #ccc; }
+.legend h1 { padding: 8px; }
+.legend ul li { list-style-type: none; padding: 1em; display: inline; }
+a.anchor { text-decoration: none !important; }
