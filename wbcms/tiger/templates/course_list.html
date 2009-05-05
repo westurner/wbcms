@@ -7,16 +7,32 @@
 {% block content %}
 {% if object_list %}
 
-{% for object in object_list %}
-<div class="course_sm" style="background: {% cycle '#f7f7f7' '#fefefe' %}">
-    <h2><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h2> 
-    <h4>{{ object.subject }}</h4>
-    <p class="desc">{{ object.description }}</p>
 
-    <div class="button button_request"><a href="{% url tiger.views.course_request_create object.slug %}">Request this course</a></div>
-</div>
+{% regroup object_list by subject as people_list %}
+<div class="legend">
+<h1><a name="top" href="#top">Courses</a></h1>
+<ul>
+{% for subject in people_list %}
+<li><a href="#{{ subject.grouper|slugify }}">{{ subject.grouper }}</a></li
 {% endfor %}
-</fieldset>
+</ul>
+</div>
+
+
+<ul class="course_list">
+{% for subject in people_list %}
+    <li><h2><a name="{{ subject.grouper|slugify }}" class="anchor" href="#top" >{{ subject.grouper }}</a></h2>
+    <ul>
+        {% for object in subject.list %}
+        <div class="course_sm">
+        <span style="float: left; padding-right: 4px; width: 5em">{{ object.duration }}</span>
+        <h3><a href="{{ object.get_absolute_url }}" title="{{ object.name }}">{{ object.name }}</a></h3>   
+        </div>
+        {% endfor %}
+    </ul>
+    </li>
+{% endfor %}
+</ul>
 {% else %}
 We currently have no available courses.
 {% endif %}

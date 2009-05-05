@@ -18,12 +18,12 @@ urlpatterns = patterns('',
     url(r'^logout/$', auth_views.logout,
         {'template_name': 'registration/logout.html'}),
     
-    (r'^admin/doc/gen/', include('genidef1x.urls')),
+    #(r'^admin/doc/gen/', include('genidef1x.urls')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/(.*)', admin.site.root),
     #(r'^tinymce/', include('tinymce.urls')),
-    (r'', include('wbcms.tiger.urls')),
-    (r'', include('cms.urls')),
+    (r'', include('tiger.urls')),
+    #(r'', include('cms.urls')),
 )
 
 if settings.DEBUG:

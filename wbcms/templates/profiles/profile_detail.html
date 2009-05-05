@@ -4,29 +4,28 @@
 {% endblock title %}
 
 {% block content %}
-<div class="profile_full">
+<div class="profile_full yui-g">
     <h1><a href="{{ object.get_absolute_url }}" title="{{ object.full_name }}"> {{ profile.full_name }}</a></h1>
 
-<table class="contact_full">
-<tr><th>Address Line 1</th><td>{{ profile.addr_1 }}</td></tr>
-<tr><th>Address Line 2</th><td>{{ profile.addr_2 }}</td></td>
-<tr><th>City</th><td>{{ profile.city }}</td></tr>
-<tr><th>State</th><td>{{ profile.state }}</td></tr>
-<tr><th>Phone Number</th><td>{{ profile.phone }}</td></tr>
-<tr><th>Email Address</th><td>{{ profile.email }}</td></tr>
-
-</table>
-
-
-
-<ul>
-<li><a href="{% url profiles_edit_profile %}">Update my information</a></li>
-<li><a href="{% url auth_password_change %}">Change my password</a></li>
+    <div class="yui-u first">
+        <table class="contact_full">
+        <tr><th>Address Line 1</th><td>{{ profile.addr_1 }}</td></tr>
+        <tr><th>Address Line 2</th><td>{{ profile.addr_2 }}</td></td>
+        <tr><th>City</th><td>{{ profile.city }}</td></tr>
+        <tr><th>State</th><td>{{ profile.state }}</td></tr>
+        <tr><th>Postal Code</th><td>{{ profile.zip_code }}</td></tr>
+        <tr><th>Phone Number</th><td>{{ profile.phone }}</td></tr>
+        <tr><th>Email Address</th><td>{{ profile.email }}</td></tr>
+        </table>
+    </div>
+    <div class="yui-u legend">
+        <ul>
+        <li><a href="{% url profiles_edit_profile %}">Update my information</a></li>
+        <li><a href="{% url auth_password_change %}">Change my password</a></li>
+        </ul>
+    </div>
 </div>
 
-<div class="course_requests">
-
-</div>
 
 
 

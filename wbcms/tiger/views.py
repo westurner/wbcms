@@ -15,7 +15,11 @@ from profiles.views import create_profile
 # Courses
 
 def course_list(request):
-    return object_list(request, Course.objects.filter(status__gt=0))
+    """
+    Select all available courses
+    """
+    q = Course.objects.filter(status__gt=0).order_by('subject','name')
+    return object_list(request, q)
 
 def course_detail(request, id=None, slug=None):
     """

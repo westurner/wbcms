@@ -42,7 +42,8 @@ class Person(TimeStampedModel):
         max_length=10)
     email = models.EmailField(verbose_name="Email Address")
     user = models.ForeignKey(User,unique=True,verbose_name="User",blank=True,
-        null=True)
+        null=True,
+        help_text="User that can modify this account")
 
 
     def __unicode__(self):
@@ -67,7 +68,8 @@ class Instructor(Person):
     An instructor. Subclass of ``Person``
     """
     courses = models.ManyToManyField('Course', 
-        related_name="ability_to_teach")
+        related_name="ability_to_teach",
+        help_text="Ability To Teach")
         
     def num_courses(self):
       return len(self.courses)
@@ -155,7 +157,7 @@ class Course(TimeStampedModel):
     """
     name = models.CharField(verbose_name="Course Name", max_length=256,
     help_text="The course title")
-    slug = models.SlugField()
+    slug = models.SlugField(help_text="URL Slug")
     subject = models.CharField(verbose_name="Course Subject", max_length=128,
     help_text="Course Subject. ex: SOA & BPM")
     description = models.TextField(verbose_name="Course Description",
@@ -203,8 +205,10 @@ class CourseRequest(TimeStampedModel):
     id = UUIDField(primary_key=True)
     person = models.ForeignKey(Person, verbose_name="Client",
         help_text="Client that course request was filed by or on behalf of")
-    course = models.ForeignKey(Course, verbose_name="Requested Course")
-    number_of_students = models.IntegerField(verbose_name="Number of Students")
+    course = models.ForeignKey(Course, verbose_name="Requested Course",
+        help_text="Course that client is requesting to schedule")
+    number_of_students = models.IntegerField(verbose_name="Number of Students",
+        help_text="Number of students that will be participating in the course")
     availability_start = models.DateTimeField(verbose_name="Start",blank=True,
         null=True,
         help_text="Availability start date (optional)")
@@ -218,7 +222,8 @@ class CourseRequest(TimeStampedModel):
         verbose_name="Course Session",
         related_name="course_request",
         null=True,
-        blank=True)
+        blank=True,
+        help_text="If scheduled, link to course session")
 
     def __unicode__(self):
         return u"%s (%s)" % (self.course.name, self.person.full_name())
@@ -228,7 +233,10 @@ class CourseRequest(TimeStampedModel):
         return ('tiger.views.course_request_create',[self.id])
 
     def get_potential_revenue(self):
-        return '$%s' % (self.course.cost*self.number_of_students)
+        if self.course.cost and self.number_of_students:
+            return '$%s' % (self.course.cost*self.number_of_students)
+        else:
+            return '0'
 
     def potential_revenue(self):
         return '%s (%s @ $%s)' % (self.get_potential_revenue(),self.number_of_students, self.course.cost)
@@ -251,8 +259,11 @@ class CourseSession(TimeWindow):
     students = models.ManyToManyField(Student,
         verbose_name="Course Students",
         related_name="student_courseschedule")
-    location = models.TextField(verbose_name="Location")
-    description = models.TextField(verbose_name="Description")
+    location = models.TextField(verbose_name="Location",
+        help_text="Where the course will meet")
+    description = models.TextField(verbose_name="Description",
+        blank=True,
+        help_text="Any extra information")
 
     def _number_of_students(self):
         return self.students.count()
