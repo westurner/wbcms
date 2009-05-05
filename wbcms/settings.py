@@ -103,7 +103,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admindocs',
     'django.contrib.flatpages',
-    'wbcms.tiger',
+    'tiger',
     #'cms',
     'django_extensions',
     'registration',
