@@ -10,10 +10,18 @@
     {% if messages %}  
     <div id="messages">  
       {% for message in messages %}  
-         <p class="m{{ message|slice:"0:1"}}">{{ message|slice:"2:" }}</p>  
+{#         <p class="m{{ message|slice:"0:1"}}">{{ message|slice:"2:" }}</p>  #}
       {% endfor %}  
-    </div>  
+    </div>
     {% endif %}
+    {% if flash.messages %}
+    <div id="messages">	
+        {% for value in flash.messages %}
+	    <p class="m{{ value|slice:"0:1" }}">{{ value|slice:"2:" }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {% endblock messages %}
     {% block content %}{% endblock content %}
 {% endblock 2 %}
