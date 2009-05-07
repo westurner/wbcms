@@ -13,17 +13,12 @@ urlpatterns = patterns('',
     # Example:
     (r'^users/', include('registration.urls')),
     (r'^accounts/', include('profiles.urls')),
-    
-    (r'^login$', utils.views.login),
+    (r'^login/$', utils.views.login),
     url(r'^logout/$', auth_views.logout,
         {'template_name': 'registration/logout.html'}),
-    
-    (r'^admin/doc/gen/', include('genidef1x.urls')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/(.*)', admin.site.root),
-    (r'^tinymce/', include('tinymce.urls')),
     (r'', include('wbcms.tiger.urls')),
-    (r'', include('cms.urls')),
 )
 
 if settings.DEBUG:
@@ -34,7 +29,7 @@ if settings.DEBUG:
     databrowse.site.register(CourseRequest)
     urlpatterns += patterns('',
         (r'^db/(.*)', login_required(databrowse.site.root)),
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': settings.MEDIA_ROOT}),
+        #(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+        #    {'document_root': settings.MEDIA_ROOT}),
 
         )
