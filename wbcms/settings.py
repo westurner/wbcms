@@ -42,6 +42,10 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+# Set locale for default currency formatting
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US.utf8' )
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
@@ -60,7 +64,7 @@ MEDIA_URL = "http://media.ts.wrd.nu/media/"
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = 'http://media.ts.wrd.nu/media/admin/'
+ADMIN_MEDIA_PREFIX = "http://media.ts.wrd.nu/media/admin/"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '7%lj)m#%(d8=2g&vcw4k1w@a4pgp%w!$eep4$bsa20+5h02d-s'
@@ -78,10 +82,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     #'django.contrib.csrf.middleware.CsrfMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    'djangoflash.middleware.FlashMiddleware',
+    #'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
-    'cms.middleware.util.XHTMLToHTMLMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     #'pagination.middleware.PaginationMiddleware'
 )
@@ -96,6 +100,11 @@ TEMPLATE_DIRS = (
     _PATH(PROJECT_NAME,'templates','yui')
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'djangoflash.context_processors.flash',
+)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -104,12 +113,12 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.flatpages',
     'tiger',
-    'cms',
     'django_extensions',
     'registration',
     'profiles',
     'utils',
     'django.contrib.admin',
+    'djangoflash'
 )
 
 AUTH_PROFILE_MODULE = 'tiger.Person'
@@ -117,8 +126,6 @@ LOGIN_URL = '/login'
 LOGOUT_URL = '/logout'
 
 ACCOUNT_ACTIVATION_DAYS = 3
-
-MEDIA_URL="http://media.ts.wrd.nu/media/"
 
 try:
     from local_settings import *
