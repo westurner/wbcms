@@ -53,7 +53,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 class CourseRequestAdmin(admin.ModelAdmin):
     list_display = ('person','course','status','potential_revenue','created','modified' )
-
+    date_hierarchy = 'created'
     list_filter = ('status',)
     radio_fields = {'status': admin.VERTICAL}
 
