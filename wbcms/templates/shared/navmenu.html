@@ -1,15 +1,16 @@
 <div id="nav-main">
 <ul>
 <li><a class="n_home" href="/" title="Home">Home</a></li>
-<li><a class="n_services" href="/services" title="Services">Services</a></li>
+<li><a class="n_services" href="/services/" title="Services">Services</a></li>
 <li><a class="n_training" href="{% url tiger.views.course_list %}" title="Training">Training</a></li>
-<li><a class="n_training" href="/contact" title="Contact">Contact</a></li>
+<li><a class="n_agile" href="/agile/" title="Agile">Agile</a></li>
+<li><a class="n_contact" href="/contact/" title="Contact">Contact</a></li>
 
 
 {% if user.is_staff %}
+</ul><ul>
 <li><a class="n_admin" href="/admin/" title="Admin">Admin</a></li>
 <li><a class="n_admin-docs" href="/admin/doc/" title="Docs">Docs</a></li>
-
 {% endif %}
 </ul>
 </div>

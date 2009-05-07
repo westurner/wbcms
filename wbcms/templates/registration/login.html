@@ -1,67 +1,65 @@
-{% extends "registration/base.html" %}
+{% extends "base_tiger.html" %}
 
 {% block title %}Log in{% endblock %}
 
 {% block content %}
 
 <div class="yui-g">
-
-<div class="yui-u first">
+<div class="yui-u">
+<div class="login">
 <h1>Log in</h1>
-
 {% if form.errors %}
-<p class="error">Please correct the errors below:</p>
+<p class="error">Invalid ID or password</p>
 {% endif %}
-
-<form method="post" action="?next={{ next|default:"/" }}">
+<form method="post" action="?next={{ next|default:"/" }}" id="login-form" class="aligned">
 {% include "form_snippet.html" %}
 <input type="submit" value="Log in" />
 </form>
 </div>
+</div>
 
-
-
-<div class="yui-u register_mini">
-
+<div class="yui-u first">
+<div class="register-mini">
   <h1>Create an account</h1>
   
-  <form method="post" action="{% url registration.views.register %}" class="wide">
-    <p>
+  <form method="post" action="{% url registration.views.register %}" class="aligned" id="registration-form" >
+    <div class="form-row">
       <label for="id_username">Username:</label>
       {% if reg_form.username.errors %}
         <p class="errors">{{ reg_form.username.errors.as_text }}</p>
       {% endif %}
       {{ reg_form.username }}
-    </p>
-    <p>
+    </div>
+    <div class="form-row">
       <label for="id_email">Email address:</label>
       {% if reg_form.email.errors %}
         <p class="errors">{{ reg_form.email.errors.as_text }}</p>
       {% endif %}
       {{ reg_form.email }}
-    </p>
-    <p>
+    </div>
+    <div class="form-row">
       <label for="id_password1">Password:</label>
       {% if reg_form.password1.errors %}
         <p class="errors">{{ reg_form.password1.errors.as_text }}</p>
       {% endif %}
       {{ reg_form.password1 }}
-    </p>
-    <p>
-      <label for="id_password2">Password (type again to catch typos):</label>
+    </div>
+    <div class="form-row">
+      <label for="id_password2">Re-type Password:</label>
       {% if reg_form.password2.errors %}
         <p class="errors">{{ reg_form.password2.errors.as_text }}</p>
       {% endif %}
       {{ reg_form.password2 }}
-    </p>
+    </div>
     <p class="submit"><input type="submit" value="Register &rarr;"></p>
   </form>
+</div>
 </div>
 
 </div>
 {% endblock %}
 
 {% block content-related %}
-<p>If you don't have an account, you can <a href="/accounts/register/">sign
+<div class="form-row">If you don't have an account, you can <a href="/accounts/register/">sign
 up</a> for one.
 {% endblock %}

@@ -1,31 +1,32 @@
 {% extends 'layouts/layout_base.html' %}
 {% load media %}{% load adminmedia %}
 {% block head %}
-  <head>
-    {% block meta %}
-    <meta http-equiv="content-type" content="{% block meta.content-type %}text/html;charset=UTF-8{% endblock meta.content-type %}" />
-    <meta name="description" content="{% block meta.description %}{% endblock meta.description %}" />
-    <meta name="keywords" content="{% block meta.keywords %}{% endblock meta.keywords %}" />
-    {% endblock meta %}
+<head>
+{% block meta %}
+<meta http-equiv="content-type" content="{% block meta.content-type %}text/html;charset=UTF-8{% endblock meta.content-type %}" />
+<meta name="description" content="{% block meta.description %}{% endblock meta.description %}" />
+<meta name="keywords" content="{% block meta.keywords %}{% endblock meta.keywords %}" />
+{% endblock meta %}
 
-    <title>{% block title %}{% endblock title %} - WBCMS - Tiger Solutions</title>
+<title>{% block title %}{% endblock title %} - ASCIT</title>
 
-    {% block css %}
-    {% block css.shared %}
-	<link rel="stylesheet" type="text/css" href="{% media_prefix %}css/reset-fonts-grids.css" />
-	<link rel="stylesheet" href="{% media_prefix %}css/styles.css" type="text/css" />
-	<link rel="stylesheet" href="{% admin_media_prefix %}css/forms.css" type="text/css" />
-	<style type="text/css">{% block devel %}{% endblock devel %}</style>
-    {% endblock css.shared %}
-    {% block css.custom %}{% endblock css.custom %}
-    {% endblock css%}
+{% block css %}
+{% block css.shared %}
+<link rel="stylesheet" type="text/css" href="{% media_prefix %}css/reset-fonts-grids.css" />
+<link rel="stylesheet" href="{% media_prefix %}css/styles.css" type="text/css" />
+<link rel="stylesheet" href="{% admin_media_prefix %}css/forms.css" type="text/css" />
+<!--[if IE]><link rel="stylesheet" type="text/css" media="screen" href="{% media_prefix %}css/ie.css" /><![endif]-->
+<style type="text/css">{% block devel %}{% endblock devel %}</style>
+{% endblock css.shared %}
+{% block css.custom %}{% endblock css.custom %}
+{% endblock css%}
 
-    {% block js %}
-    {% block js.shared %}{% endblock js.shared %}
-    {% block js.custom %}{% endblock js.custom %}
-    {% endblock js%}
-    {% block extrahead %}{% endblock extrahead %}
-  </head>
+{% block js %}
+{% block js.shared %}{% endblock js.shared %}
+{% block js.custom %}{% endblock js.custom %}
+{% endblock js%}
+{% block extrahead %}{% endblock extrahead %}
+</head>
 {% endblock head %}
 
 {% block header %}
