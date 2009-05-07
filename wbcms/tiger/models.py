@@ -3,14 +3,13 @@ from django.contrib.localflavor.us import models as us_models
 from django.contrib.auth.models import User
 
 import locale
-locale.setlocale( locale.LC_ALL, '' )
 
 from django_extensions.db.models import TimeStampedModel
 from django_extensions.db.fields import UUIDField
 
 class Company(models.Model):
     """
-    A company a ``Person`` may work for.
+    A company a `tiger.Person` may work for.
     """
     name = models.CharField(verbose_name="Company Name", max_length=128)
 
@@ -23,7 +22,7 @@ class Company(models.Model):
 
 class Person(TimeStampedModel):
     """
-    A person. With name, ``Company``, address, and person information
+    A person. With name, `tiger.Company`, address, and email
     """
     first_name = models.CharField(verbose_name="First Name", max_length=42)
     middle_name = models.CharField(verbose_name="Middle Name", max_length=42,
@@ -64,7 +63,7 @@ class Person(TimeStampedModel):
 
 class Instructor(Person):
     """
-    An instructor. Subclass of ``Person``
+    An instructor. Subclass of `tiger.Person`
     """
     courses = models.ManyToManyField('Course', 
         related_name="ability_to_teach")
@@ -78,7 +77,7 @@ class Instructor(Person):
 
 class Student(Person):
     """
-    A student. Subclass of ``Person``
+    A student. Subclass of `tiger.Person`
     """
     pass
 
