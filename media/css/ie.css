@@ -1,0 +1,9 @@
+.colM, .flex { min-height: 200px; }
+
+#content-related, #admin_tasks { margin-left: 3em; }
+
+#admin_tasks { width: 14em !important; }
+
+a.addlink { color: black !important; }
+
+
