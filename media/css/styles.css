@@ -45,6 +45,7 @@ border:1px solid #CCC;
 background:#f7f7f7!important;
 border:1px solid #ccc;
 padding:0 15px 10px!important;
+min-height: 20px;
 }
 
 #content h1 {
@@ -284,6 +285,13 @@ color:#fff;
 margin-bottom:0;
 padding-bottom:0;
 }
+
+a.button { margin: 8px 0 !important; padding: 3px; }
+
+.button.default, input.default[type="submit"], .submit-row input.default {
+float: left;
+}
+
 
 .colSM #content-related {
 margin-left:-20em!important;
@@ -590,6 +598,10 @@ div.submit-row {
 background:none;
 border:0;
 max-width:800px;
+}
+
+.submit-row p {
+margin:0.8em;
 }
 
 dl {
