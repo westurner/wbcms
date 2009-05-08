@@ -32,7 +32,7 @@ class InstructorAvailabilityInline(admin.TabularInline):
 
 
 class InstructorAdmin(admin.ModelAdmin):
-    list_display = ('last_name','first_name','email','modified')
+    list_display = ('last_name','first_name','email','num_courses','scheduled_sessions','modified',)
     inlines = [PhoneInline, InstructorAvailabilityInline ]
     save_on_top = True
 
