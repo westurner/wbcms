@@ -67,8 +67,7 @@ class Instructor(Person):
     An instructor. Subclass of `tiger.Person`
     """
     courses = models.ManyToManyField('Course', 
-        related_name="ability_to_teach",
-        help_text="Ability To Teach")
+        related_name="ability_to_teach")
         
     def num_courses(self):
       return len(self.courses)
@@ -156,7 +155,7 @@ class Course(TimeStampedModel):
     """
     name = models.CharField(verbose_name="Course Name", max_length=256,
     help_text="The course title")
-    slug = models.SlugField(help_text="URL Slug")
+    slug = models.SlugField()
     subject = models.CharField(verbose_name="Course Subject", max_length=128,
     help_text="Course Subject. ex: SOA & BPM")
     description = models.TextField(verbose_name="Course Description",
@@ -186,15 +185,15 @@ class Course(TimeStampedModel):
     @models.permalink
     def get_absolute_url(self):
         return ('tiger.views.course_request_create',[self.slug])
-
-
+        
+        
 COURSE_REQUEST_STATUSES = (
-            (-1, 'Unverified'),
-            ( 1, 'Verified'),    # Pending
-            ( 2, 'Deferred'), # Waiting List
+            (-1, 'New'),
+            ( 1, 'Pending'),    # Pending
+            ( 2, 'Waiting List'), # Waiting List
             ( 3, 'Scheduled'), # Has a Session
-            ( 4, 'Cancelled - By Client'),
-            ( 5, 'Cancelled - Duplicate')
+            ( -2, 'Cancelled - By Client'),
+            ( -3, 'Cancelled - Duplicate')
 )
 class CourseRequest(TimeStampedModel):
     """
@@ -205,9 +204,9 @@ class CourseRequest(TimeStampedModel):
     person = models.ForeignKey(Person, verbose_name="Client",
         help_text="Client that course request was filed by or on behalf of")
     course = models.ForeignKey(Course, verbose_name="Requested Course",
-        help_text="Course that client is requesting to schedule")
+        help_text="Course that the client would like to take")
     number_of_students = models.IntegerField(verbose_name="Number of Students",
-        help_text="Number of students that will be participating in the course")
+        help_text="Potential number of students")
     availability_start = models.DateTimeField(verbose_name="Start",blank=True,
         null=True,
         help_text="Availability start date (optional)")
@@ -222,7 +221,8 @@ class CourseRequest(TimeStampedModel):
         related_name="course_request",
         null=True,
         blank=True,
-        help_text="If scheduled, link to course session")
+        help_text="Associated scheduled course. Click the Plus (+) sign to schedule a course session")
+
 
     def __unicode__(self):
         return u"%s (%s)" % (self.course.name, self.person.full_name())
@@ -232,13 +232,18 @@ class CourseRequest(TimeStampedModel):
         return ('tiger.views.course_request_create',[self.id])
 
     def get_potential_revenue(self):
-        if self.course.cost and self.number_of_students:
-            return '$%s' % (self.course.cost*self.number_of_students)
-        else:
-            return '0'
+        return '$%s' % (self.course.cost*self.number_of_students)
 
     def potential_revenue(self):
         return '%s (%s @ $%s)' % (self.get_potential_revenue(),self.number_of_students, self.course.cost)
+
+    def save(self):
+        """
+        If the course has an associated session, set status as scheduled
+        """
+        if self.session:
+            self.status = 3
+        super(CourseRequest, self).save()
 
     class Meta:
         verbose_name = "Course Request"
@@ -258,11 +263,8 @@ class CourseSession(TimeWindow):
     students = models.ManyToManyField(Student,
         verbose_name="Course Students",
         related_name="student_courseschedule")
-    location = models.TextField(verbose_name="Location",
-        help_text="Where the course will meet")
-    description = models.TextField(verbose_name="Description",
-        blank=True,
-        help_text="Any extra information")
+    location = models.TextField(verbose_name="Location")
+    description = models.TextField(verbose_name="Description")
 
     def _number_of_students(self):
         return self.students.count()
