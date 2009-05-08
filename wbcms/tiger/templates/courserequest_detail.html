@@ -2,26 +2,36 @@
 {% block title %}Course Request - {{ object.course.name }}{%endblock %}
 {% block content %}
 
-{{ object }}
-
 <h1>{{ object.course.name }}</h1>
 
-{% with object.course as object %}
-<ul class="course_list">
-<li>
-        <div class="course_sm">
-        <span style="float: left; padding-right: 4px; width: 5em">{{ object.duration }}</span>
-        <h3><a href="{{ object.get_absolute_url }}" title="{{ object.name }}">{{ object.name }}</a></h3>   
-        </div>
 
-</li>
-</ul>
-{% endwith %}
+<p>On {{ object.created|date }}, you requested <a href="{{ object.course.get_absolute_url }}" title="{{ object.course.name }}">{{ object.course.name }}</a> ({{ object.course.duration }})</p>
 
-<p>Between {{ object.availability_start|date }} and {{ object.availability_end|date }}</p>
+<p><a href="{% url course_request_update object.id %}">{{ object.number_of_students }} Students</a></p>
 
-{% with object.course as course %}
-{% include "_course-full.html" %}
-{% endwith %}
+<p>
+{% if object.availability_start %}
+With availability
+    {% if object.availability_end %}
+    between {{ object.availability_start|date }} and {{ object.availability_end|date }}
+    {% else %}
+    after {{ object.availability_start|date }}
+    {% endif %}
+{% else %}
+    {% if object.availability_end %}
+    With availability before {{ object.availability_end|date }}
+    {% else %}
+    We don't have an availability period for this request
+    {% endif %}
+{% endif %}
+</p>
+
+<div>
+<a class="button" href="{% url course_request_update object.id %}">Update this request</a>
+<a class="button" href="{% url course_request_cancel object.id %}">Cancel this request</a>
+<a href="{% url profiles.views.profile_detail user.username %}">Back to My Profile</a>
+
+&nbsp;
+</div>
 
 {% endblock content %}

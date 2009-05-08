@@ -17,9 +17,13 @@
 {% block content %}
 <div class="yui-gc">
     <div class="yui-u first">
-        {% with course as object %}
+        {% if object.course %}
+        {% with object.course as object %}
         {% include "_course-full.html" %}
         {% endwith %}
+        {% else %}
+        {% include "_course-full.html" %}
+        {% endif %}
     </div>
     <div class="yui-u">
         {% include "_courserequest-form.html" %}

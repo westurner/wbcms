@@ -1,11 +1,14 @@
 {% extends "base.html" %}
+{% block title %}My Course Requests{% endblock title %}
 {% block content %}
+<h1>My Outstanding Course Requests</h1>
 {% if object_list %}
 <table class="module">
-
 {% with object_list as course_requests %}
 {% include "_courserequest-list.html" %}
 {% endwith %}
 </table>
+{% else %}
+<p>No course requests found. You might be looking for our <a href="/courses">Training Courses</a>?</p>
 {% endif %}
 {% endblock content %}
