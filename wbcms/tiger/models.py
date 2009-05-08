@@ -184,15 +184,15 @@ class Course(TimeStampedModel):
     @models.permalink
     def get_absolute_url(self):
         return ('tiger.views.course_request_create',[self.slug])
-
-
+        
+        
 COURSE_REQUEST_STATUSES = (
-            (-1, 'Unverified'),
-            ( 1, 'Verified'),    # Pending
-            ( 2, 'Deferred'), # Waiting List
+            (-1, 'New'),
+            ( 1, 'Pending'),    # Pending
+            ( 2, 'Waiting List'), # Waiting List
             ( 3, 'Scheduled'), # Has a Session
-            ( 4, 'Cancelled - By Client'),
-            ( 5, 'Cancelled - Duplicate')
+            ( -2, 'Cancelled - By Client'),
+            ( -3, 'Cancelled - Duplicate')
 )
 class CourseRequest(TimeStampedModel):
     """
@@ -202,8 +202,10 @@ class CourseRequest(TimeStampedModel):
     id = UUIDField(primary_key=True)
     person = models.ForeignKey(Person, verbose_name="Client",
         help_text="Client that course request was filed by or on behalf of")
-    course = models.ForeignKey(Course, verbose_name="Requested Course")
-    number_of_students = models.IntegerField(verbose_name="Number of Students")
+    course = models.ForeignKey(Course, verbose_name="Requested Course",
+        help_text="Course that the client would like to take")
+    number_of_students = models.IntegerField(verbose_name="Number of Students",
+        help_text="Potential number of students")
     availability_start = models.DateTimeField(verbose_name="Start",blank=True,
         null=True,
         help_text="Availability start date (optional)")
@@ -217,7 +219,9 @@ class CourseRequest(TimeStampedModel):
         verbose_name="Course Session",
         related_name="course_request",
         null=True,
-        blank=True)
+        blank=True,
+        help_text="Associated scheduled course. Click the Plus (+) sign to schedule a course session")
+
 
     def __unicode__(self):
         return u"%s (%s)" % (self.course.name, self.person.full_name())
@@ -231,6 +235,14 @@ class CourseRequest(TimeStampedModel):
 
     def potential_revenue(self):
         return '%s (%s @ $%s)' % (self.get_potential_revenue(),self.number_of_students, self.course.cost)
+
+    def save(self):
+        """
+        If the course has an associated session, set status as scheduled
+        """
+        if self.session:
+            self.status = 3
+        super(CourseRequest, self).save()
 
     class Meta:
         verbose_name = "Course Request"
