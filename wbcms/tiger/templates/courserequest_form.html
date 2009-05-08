@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load adminmedia %}
-{% block title %}{{ course.name }} - Courses{{ block.super }}{% endblock %}
+{% block title %}{% firstof object.course.name object.name %} - Courses{{ block.super }}{% endblock %}
 {% block css.custom %}
 <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css"/>
 <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/base.css"/>

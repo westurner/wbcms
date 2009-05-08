@@ -69,8 +69,11 @@ class Instructor(Person):
         related_name="ability_to_teach")
         
     def num_courses(self):
-      return len(self.courses)
-      
+        return self.courses.count()
+     
+    def scheduled_sessions(self):
+        return self.assigned_instructor.count()
+
     def availability_entries(self):
         return self.instructoravailability_set.count()
 
