@@ -8,6 +8,7 @@
         {% include "form_snippet.html" %}
         </fieldset>
         <div class="submit-row">
+        <a class="button" style="float:right" href="{% url profiles.views.profile_detail user.username %}">Cancel</a>
         <input class="default" type="submit" name="_save" value="Submit"/>
         </div>
         </form>

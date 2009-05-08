@@ -3,22 +3,14 @@
 {% block devel %} {% endblock devel %}
 {% block content %}
 <h1>Create your profile</h1>
-<div class="yui-gd">
-    <div class="yui-u first">
-        <div style="border:1px solid #ccc; background: #eee; padding: 1em;">
-            <p>We need some contact information in order to serve you best</p>
-        </div>
-    </div>
-    <div class="yui-u">
-        <form id="course_request" method="POST">
-        <fieldset class="module aligned">
-        {% include "form_snippet.html" %}
-        </fieldset>
-        <div class="submit-row">
-        <input class="default" type="submit" name="_save" value="Submit"/>
-        </div>
-        </form>
-    </div>
+<form id="profile" method="POST">
+<fieldset class="module aligned">
+{% include "form_snippet.html" %}
+</fieldset>
+<div class="submit-row">
+<input class="default" type="submit" name="_save" value="Submit"/>
 </div>
+</form>
+
 
 {% endblock content %}

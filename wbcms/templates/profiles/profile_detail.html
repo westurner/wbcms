@@ -17,12 +17,25 @@
 
 </table>
 
+{% with profile.courserequest_set.all as course_requests %}
+<h1>My Outstanding Course Requests</h1>
+{% if course_requests %}
+<table class="module">
+{% include "_courserequest-list.html" %}
+</table>
+{% else %}
+<p>No course requests found. You might be looking for our <a href="/courses">Training Courses</a></p>
+{% endif %}
+{% endwith %}
 
-
+<div class="legend">
 <ul>
+<li><a href="{% url course_request_list %}">My Oustanding Course Requests</a></li>
 <li><a href="{% url profiles_edit_profile %}">Update my information</a></li>
 <li><a href="{% url auth_password_change %}">Change my password</a></li>
 </div>
+</div>
+
 
 <div class="course_requests">
 
