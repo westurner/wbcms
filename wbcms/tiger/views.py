@@ -37,7 +37,7 @@ def course_request_create(request,slug):
     initial_form_data = {}
 
     if not request.user.is_authenticated():
-	request.flash["messages"] = [("S Please login or create an account to request this course")]
+        request.flash["messages"] = [("S Please login or create an account to request this course")]
         return HttpResponseRedirect('/login/?next=%s' % request.path)
 
     course = lookup_object(Course, None, slug, 'slug')                 
@@ -48,7 +48,7 @@ def course_request_create(request,slug):
         person = request.user.get_profile()
         initial_form_data['person'] = person.id
     except:
-        request.user.message_set.create(message=_("S Please update your account information"))
+        request.flash["messages"] = [("S First, we'll need some contact information to contact you about your request")]
         return create_profile(request, success_url=reverse('course_request_create',args=[course.slug]))
 
     
@@ -74,7 +74,7 @@ def course_request_create(request,slug):
     t = loader.get_template(template_name)
     c = RequestContext(request, {
         'form': form,
-        'course':course
+        'object':course
     })
     return HttpResponse(t.render(c))
 
@@ -94,17 +94,36 @@ def course_request_list(request):
     try:
         person = request.user.get_profile()
     except:
-        request.user.message_set.create(message=_("S Please update your account information."))
+        request.flash["messages"] = [_("S Please update your contact information.")]
         return create_profile(request, success_url=reverse('course_request_list'))
         
-    return object_list(request, CourseRequest.objects.filter(person=person))
+    return object_list(request, CourseRequest.objects.filter(status__gt=0,person=person))
 
 @login_required
-def course_request_update(request):
+def course_request_update(request, id):
     """
     Update a :model:`tiger.CourseRequest` object
     """
-    return update_object(request, form_class=CourseRequestForm)
+    return update_object(request, object_id=id, form_class=CourseRequestForm,
+        post_save_redirect=reverse('course_request_detail', args=[id]))
 
-
+@login_required
+def course_request_cancel(request, id):
+    """
+    Update a :model:`tiger.CourseRequest` object
+    """
+    course_request = lookup_object(CourseRequest, id, None, None)  
+    
+    if course_request.session:
+        request.flash["messages"] = [_("S This course is scheduled. Please contact us")]
+    else:            
+        # Set status to cancelled - by client
+        course_request.status = -2
+        course_request.save()
+        request.flash["messages"] = [_("S Your course request has been cancelled")]    
+    
+    # TODO: Confirm CSRF
+    
+    return HttpResponseRedirect(reverse('profiles.views.profile_detail', args=[request.user.username]))
+    
 
