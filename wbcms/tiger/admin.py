@@ -39,7 +39,8 @@ class InstructorAdmin(admin.ModelAdmin):
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('name','subject','duration','cost','min_required_students')
-    list_filter = ('subject',)
+    list_filter = ('subject','duration')
+    search_fields = ('name','subject',)
     prepopulated_fields = {'slug': ('name',) }
     save_on_top = True
 
